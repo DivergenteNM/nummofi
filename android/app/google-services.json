@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1034128774527",
+    "project_id": "nummofi",
+    "storage_bucket": "nummofi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034128774527:android:315e739d3c131c80c3b64a",
+        "android_client_info": {
+          "package_name": "com.example.nummofi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9j8Qb_EiDQF6rN7Y-6zNi3II7Jpy4qpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

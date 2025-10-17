@@ -1,0 +1,25 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "nummofi",
+                    "appId": "1:1034128774527:android:315e739d3c131c80c3b64a",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "nummofi",
+                    "configurations": {
+                        "android": "1:1034128774527:android:315e739d3c131c80c3b64a",
+                        "ios": "1:1034128774527:ios:1388b2cd4e171c40c3b64a",
+                        "macos": "1:1034128774527:ios:1388b2cd4e171c40c3b64a",
+                        "web": "1:1034128774527:web:02f1baf596421e9dc3b64a",
+                        "windows": "1:1034128774527:web:6f8a4c7b0cd3d0e6c3b64a"
+                    }
+                }
+            }
+        }
+    }
+}
