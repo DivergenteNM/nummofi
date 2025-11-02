@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../data/models/transaction_model.dart';
 import '../../data/models/budget_model.dart';
 import '../../data/models/monthly_summary_model.dart';
+import '../../data/models/goal_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -128,6 +129,66 @@ class FirestoreService {
       });
     } catch (e) {
       throw Exception('Error al cerrar mes: $e');
+    }
+  }
+
+  // ==================== METAS ====================
+  
+  // Stream de metas
+  Stream<List<GoalModel>> getGoalsStream() {
+    return _firestore
+        .collection(_getCollectionPath('goals'))
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => GoalModel.fromFirestore(doc))
+            .toList());
+  }
+
+  // Agregar meta
+  Future<void> addGoal(GoalModel goal) async {
+    try {
+      await _firestore
+          .collection(_getCollectionPath('goals'))
+          .add(goal.toMap());
+    } catch (e) {
+      throw Exception('Error al agregar meta: $e');
+    }
+  }
+
+  // Actualizar meta
+  Future<void> updateGoal(String id, GoalModel goal) async {
+    try {
+      await _firestore
+          .collection(_getCollectionPath('goals'))
+          .doc(id)
+          .update(goal.toMap());
+    } catch (e) {
+      throw Exception('Error al actualizar meta: $e');
+    }
+  }
+
+  // Eliminar meta
+  Future<void> deleteGoal(String id) async {
+    try {
+      await _firestore
+          .collection(_getCollectionPath('goals'))
+          .doc(id)
+          .delete();
+    } catch (e) {
+      throw Exception('Error al eliminar meta: $e');
+    }
+  }
+
+  // Actualizar monto actual de una meta
+  Future<void> updateGoalProgress(String id, double newAmount) async {
+    try {
+      await _firestore
+          .collection(_getCollectionPath('goals'))
+          .doc(id)
+          .update({'currentAmount': newAmount});
+    } catch (e) {
+      throw Exception('Error al actualizar progreso: $e');
     }
   }
 }
