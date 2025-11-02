@@ -3,6 +3,7 @@ import '../../data/models/transaction_model.dart';
 import '../../data/models/budget_model.dart';
 import '../../data/models/monthly_summary_model.dart';
 import '../../data/models/channel_balance_model.dart';
+import '../../data/models/goal_model.dart';
 import '../services/firestore_service.dart';
 import '../constants/app_constants.dart';
 
@@ -18,6 +19,7 @@ class FinanceProvider with ChangeNotifier {
   List<BudgetModel> _budgets = [];
   List<MonthlySummaryModel> _monthlySummaries = [];
   List<ChannelBalanceModel> _channelBalances = [];
+  List<GoalModel> _goals = [];
   
   int _currentMonth = DateTime.now().month;
   int _currentYear = DateTime.now().year;
@@ -28,6 +30,7 @@ class FinanceProvider with ChangeNotifier {
   List<BudgetModel> get budgets => _budgets;
   List<MonthlySummaryModel> get monthlySummaries => _monthlySummaries;
   List<ChannelBalanceModel> get channelBalances => _channelBalances;
+  List<GoalModel> get goals => _goals;
   int get currentMonth => _currentMonth;
   int get currentYear => _currentYear;
   bool get isLoading => _isLoading;
@@ -99,6 +102,11 @@ class FinanceProvider with ChangeNotifier {
     _firestoreService.getMonthlySummariesStream().listen((summaries) {
       _monthlySummaries = summaries;
       _calculateBalances();
+      notifyListeners();
+    });
+
+    _firestoreService.getGoalsStream().listen((goals) {
+      _goals = goals;
       notifyListeners();
     });
   }
@@ -280,6 +288,62 @@ class FinanceProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
+      rethrow;
+    }
+  }
+
+  // ==================== METAS ====================
+
+  // Agregar meta
+  Future<void> addGoal(GoalModel goal) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      await _firestoreService.addGoal(goal);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  // Actualizar meta
+  Future<void> updateGoal(String id, GoalModel goal) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      await _firestoreService.updateGoal(id, goal);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  // Eliminar meta
+  Future<void> deleteGoal(String id) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      await _firestoreService.deleteGoal(id);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  // Actualizar progreso de meta
+  Future<void> updateGoalProgress(String id, double newAmount) async {
+    try {
+      await _firestoreService.updateGoalProgress(id, newAmount);
+    } catch (e) {
       rethrow;
     }
   }

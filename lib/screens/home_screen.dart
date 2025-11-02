@@ -7,6 +7,7 @@ import 'transactions_screen.dart';
 import 'budgets_screen.dart';
 import 'reports_screen.dart';
 import 'history_screen.dart';
+import 'goals_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const BudgetsScreen(),
     const ReportsScreen(),
     const HistoryScreen(),
+    const GoalsScreen(),
   ];
 
   @override
@@ -111,6 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
             label: 'Historial',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.flag),
+            label: 'Metas',
           ),
         ],
       ),
