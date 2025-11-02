@@ -23,12 +23,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Título
           Text(
             'Reportes y Gráficas',
             style: Theme.of(context).textTheme.displayMedium,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
 
@@ -64,7 +65,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Período de Análisis',
@@ -72,23 +73,24 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
             SegmentedButton<String>(
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: 'month',
-                  label: Text('Este Mes'),
+                  label: Text('Este Mes', style: TextStyle(fontSize: 12)),
                   icon: Icon(Icons.calendar_today, size: 16),
                 ),
                 ButtonSegment(
                   value: '3months',
-                  label: Text('3 Meses'),
+                  label: Text('Trimestre', style: TextStyle(fontSize: 12)),
                   icon: Icon(Icons.calendar_month, size: 16),
                 ),
                 ButtonSegment(
                   value: 'year',
-                  label: Text('Este Año'),
+                  label: Text('Este Año', style: TextStyle(fontSize: 12)),
                   icon: Icon(Icons.calendar_view_month, size: 16),
                 ),
               ],
@@ -120,11 +122,12 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Estadísticas Generales',
               style: Theme.of(context).textTheme.displaySmall,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             GridView.count(
@@ -133,7 +136,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.5,
+              childAspectRatio: 1.3,
               children: [
                 _buildStatCard(
                   'Ingresos Totales',
@@ -178,15 +181,17 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: color, size: 28),
-          const SizedBox(height: 8),
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 6),
           Text(
             title,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 10,
               color: Colors.grey[700],
             ),
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           FittedBox(
@@ -194,7 +199,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             child: Text(
               value,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: color,
               ),
@@ -219,14 +224,22 @@ class _ReportsScreenState extends State<ReportsScreen> {
     if (expensesByCategory.isEmpty) {
       return Card(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text(
+                'Distribución de Egresos',
+                style: Theme.of(context).textTheme.displaySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
               Icon(Icons.pie_chart_outline, size: 64, color: Colors.grey[400]),
               const SizedBox(height: 16),
               Text(
                 'No hay egresos para mostrar',
                 style: TextStyle(color: Colors.grey[600]),
+                textAlign: TextAlign.center,
               ),
             ],
           ),
@@ -241,20 +254,21 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Distribución de Egresos',
               style: Theme.of(context).textTheme.displaySmall,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            SizedBox(
-              height: 250,
-              child: Row(
-                children: [
-                  // Gráfica de dona
-                  Expanded(
-                    flex: 2,
+            Row(
+              children: [
+                // Gráfica de dona
+                Expanded(
+                  flex: 2,
+                  child: SizedBox(
+                    height: 250,
                     child: PieChart(
                       PieChartData(
                         sectionsSpace: 2,
@@ -266,10 +280,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  // Leyenda
-                  Expanded(
-                    flex: 1,
+                ),
+                const SizedBox(width: 16),
+                // Leyenda
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    height: 250,
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,8 +321,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             // Lista de categorías con porcentajes
@@ -412,11 +429,12 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Evolución de Ingresos y Egresos',
               style: Theme.of(context).textTheme.displaySmall,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
             SizedBox(
@@ -573,34 +591,26 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Top Categorías',
               style: Theme.of(context).textTheme.displaySmall,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: _buildTopList(
-                    'Mayores Egresos',
-                    topExpenses.take(5).toList(),
-                    AppColors.expense,
-                    Icons.trending_up,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildTopList(
-                    'Mayores Ingresos',
-                    topIncomes.take(5).toList(),
-                    AppColors.income,
-                    Icons.trending_down,
-                  ),
-                ),
-              ],
+            _buildTopList(
+              'Mayores Ingresos',
+              topIncomes.take(5).toList(),
+              AppColors.income,
+              Icons.trending_down,
+            ),
+            const SizedBox(height: 24),
+            _buildTopList(
+              'Mayores Egresos',
+              topExpenses.take(5).toList(),
+              AppColors.expense,
+              Icons.trending_up,
             ),
           ],
         ),
@@ -769,11 +779,12 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Comparativa por Canal',
               style: Theme.of(context).textTheme.displaySmall,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             ...channelData.entries.map((entry) {
