@@ -227,80 +227,64 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
   }
 
   Widget _buildEditMode() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Establecer Presupuestos por Categoría',
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-            const SizedBox(height: 16),
-            Row(
+    return Column(
+      children: [
+        // Presupuestos de Ingresos
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Presupuestos de Egresos
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Presupuesto de Egresos',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ...AppConstants.categoriasEgreso.map((category) {
-                        return _buildBudgetInput(
-                          category,
-                          _expenseBudget[category] ?? 0,
-                          (value) {
-                            setState(() {
-                              _expenseBudget[category] = value;
-                            });
-                          },
-                        );
-                      }),
-                    ],
-                  ),
+                Text(
+                  'Presupuesto de Ingresos',
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
-                const SizedBox(width: 16),
-                // Presupuestos de Ingresos
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Presupuesto de Ingresos',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ...AppConstants.categoriasIngreso.map((category) {
-                        return _buildBudgetInput(
-                          category,
-                          _incomeBudget[category] ?? 0,
-                          (value) {
-                            setState(() {
-                              _incomeBudget[category] = value;
-                            });
-                          },
-                        );
-                      }),
-                    ],
-                  ),
-                ),
+                const SizedBox(height: 16),
+                ...AppConstants.categoriasIngreso.map((category) {
+                  return _buildBudgetInput(
+                    category,
+                    _incomeBudget[category] ?? 0,
+                    (value) {
+                      setState(() {
+                        _incomeBudget[category] = value;
+                      });
+                    },
+                  );
+                }),
               ],
             ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(height: 16),
+        // Presupuestos de Egresos
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Presupuesto de Egresos',
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                const SizedBox(height: 16),
+                ...AppConstants.categoriasEgreso.map((category) {
+                  return _buildBudgetInput(
+                    category,
+                    _expenseBudget[category] ?? 0,
+                    (value) {
+                      setState(() {
+                        _expenseBudget[category] = value;
+                      });
+                    },
+                  );
+                }),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -309,36 +293,33 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
     double currentValue,
     Function(double) onChanged,
   ) {
-    final controller = TextEditingController(
-      text: currentValue > 0 ? currentValue.toStringAsFixed(0) : '',
-    );
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Text(
               category,
-              style: const TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 14),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 12),
           Expanded(
-            flex: 1,
-            child: TextField(
-              controller: controller,
+            flex: 2,
+            child: TextFormField(
+              initialValue: currentValue > 0 ? currentValue.toStringAsFixed(0) : '',
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 isDense: true,
                 contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 8,
+                  horizontal: 12,
+                  vertical: 12,
                 ),
                 prefixText: '\$ ',
+                hintText: '0',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
               onChanged: (value) {
