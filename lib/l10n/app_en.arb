@@ -1,0 +1,129 @@
+{
+  "@@locale": "en",
+  "appTitle": "NummoFi - Financial Management",
+  "@appTitle": {
+    "description": "The application title"
+  },
+  
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Dashboard label"
+  },
+  
+  "transactions": "Transactions",
+  "@transactions": {
+    "description": "Transactions label"
+  },
+  
+  "budgets": "Budgets",
+  "@budgets": {
+    "description": "Budgets label"
+  },
+  
+  "reports": "Reports",
+  "@reports": {
+    "description": "Reports label"
+  },
+  
+  "history": "History",
+  "@history": {
+    "description": "History label"
+  },
+  
+  "goals": "Goals",
+  "@goals": {
+    "description": "Goals label"
+  },
+  
+  "january": "January",
+  "february": "February",
+  "march": "March",
+  "april": "April",
+  "may": "May",
+  "june": "June",
+  "july": "July",
+  "august": "August",
+  "september": "September",
+  "october": "October",
+  "november": "November",
+  "december": "December",
+  
+  "income": "Income",
+  "expense": "Expense",
+  "amount": "Amount",
+  "category": "Category",
+  "description": "Description",
+  "date": "Date",
+  "save": "Save",
+  "cancel": "Cancel",
+  "edit": "Edit",
+  "delete": "Delete",
+  "add": "Add",
+  
+  "totalIncome": "Total Income",
+  "totalExpenses": "Total Expenses",
+  "balance": "Balance",
+  "savings": "Savings",
+  
+  "addTransaction": "Add Transaction",
+  "editTransaction": "Edit Transaction",
+  "deleteTransaction": "Delete Transaction",
+  "noTransactions": "No transactions recorded",
+  
+  "setBudgets": "Set Budgets",
+  "editBudgets": "Edit Budgets",
+  "viewSummary": "View Summary",
+  "budgetSummary": "Budget Summary",
+  "spent": "Spent",
+  "remaining": "Remaining",
+  "exceeded": "Exceeded",
+  "noBudgets": "No budgets set",
+  
+  "monthlyReport": "Monthly Report",
+  "expensesByCategory": "Expenses by Category",
+  "incomeVsExpenses": "Income vs Expenses",
+  "trend": "Trend",
+  
+  "recentTransactions": "Recent Transactions",
+  "allTransactions": "All Transactions",
+  "filterByDate": "Filter by Date",
+  "filterByCategory": "Filter by Category",
+  
+  "createGoal": "Create Goal",
+  "editGoal": "Edit Goal",
+  "goalName": "Goal Name",
+  "targetAmount": "Target Amount",
+  "currentAmount": "Current Amount",
+  "deadline": "Deadline",
+  "progress": "Progress",
+  "completed": "Completed",
+  "inProgress": "In Progress",
+  "noGoals": "No goals created",
+  
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success",
+  "confirm": "Confirm",
+  "yes": "Yes",
+  "no": "No",
+  
+  "authenticationError": "Authentication error",
+  "notAuthenticated": "Not authenticated",
+  "retry": "Retry",
+  "signIn": "Sign in",
+  
+  "selectCategory": "Select Category",
+  "selectDate": "Select Date",
+  "enterAmount": "Enter Amount",
+  "enterDescription": "Enter Description",
+  
+  "food": "Food",
+  "transport": "Transport",
+  "entertainment": "Entertainment",
+  "health": "Health",
+  "education": "Education",
+  "shopping": "Shopping",
+  "bills": "Bills",
+  "salary": "Salary",
+  "other": "Other"
+}

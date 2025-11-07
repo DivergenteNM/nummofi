@@ -1,0 +1,129 @@
+{
+  "@@locale": "es",
+  "appTitle": "NummoFi - Gestión Financiera",
+  "@appTitle": {
+    "description": "El título de la aplicación"
+  },
+  
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Etiqueta del Dashboard"
+  },
+  
+  "transactions": "Transacciones",
+  "@transactions": {
+    "description": "Etiqueta de Transacciones"
+  },
+  
+  "budgets": "Presupuestos",
+  "@budgets": {
+    "description": "Etiqueta de Presupuestos"
+  },
+  
+  "reports": "Reportes",
+  "@reports": {
+    "description": "Etiqueta de Reportes"
+  },
+  
+  "history": "Historial",
+  "@history": {
+    "description": "Etiqueta de Historial"
+  },
+  
+  "goals": "Metas",
+  "@goals": {
+    "description": "Etiqueta de Metas"
+  },
+  
+  "january": "Enero",
+  "february": "Febrero",
+  "march": "Marzo",
+  "april": "Abril",
+  "may": "Mayo",
+  "june": "Junio",
+  "july": "Julio",
+  "august": "Agosto",
+  "september": "Septiembre",
+  "october": "Octubre",
+  "november": "Noviembre",
+  "december": "Diciembre",
+  
+  "income": "Ingreso",
+  "expense": "Gasto",
+  "amount": "Monto",
+  "category": "Categoría",
+  "description": "Descripción",
+  "date": "Fecha",
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "add": "Agregar",
+  
+  "totalIncome": "Ingresos Totales",
+  "totalExpenses": "Gastos Totales",
+  "balance": "Balance",
+  "savings": "Ahorros",
+  
+  "addTransaction": "Agregar Transacción",
+  "editTransaction": "Editar Transacción",
+  "deleteTransaction": "Eliminar Transacción",
+  "noTransactions": "No hay transacciones registradas",
+  
+  "setBudgets": "Establecer Presupuestos",
+  "editBudgets": "Editar Presupuestos",
+  "viewSummary": "Ver Resumen",
+  "budgetSummary": "Resumen de Presupuestos",
+  "spent": "Gastado",
+  "remaining": "Restante",
+  "exceeded": "Excedido",
+  "noBudgets": "No hay presupuestos establecidos",
+  
+  "monthlyReport": "Reporte Mensual",
+  "expensesByCategory": "Gastos por Categoría",
+  "incomeVsExpenses": "Ingresos vs Gastos",
+  "trend": "Tendencia",
+  
+  "recentTransactions": "Transacciones Recientes",
+  "allTransactions": "Todas las Transacciones",
+  "filterByDate": "Filtrar por Fecha",
+  "filterByCategory": "Filtrar por Categoría",
+  
+  "createGoal": "Crear Meta",
+  "editGoal": "Editar Meta",
+  "goalName": "Nombre de la Meta",
+  "targetAmount": "Monto Objetivo",
+  "currentAmount": "Monto Actual",
+  "deadline": "Fecha Límite",
+  "progress": "Progreso",
+  "completed": "Completada",
+  "inProgress": "En Progreso",
+  "noGoals": "No hay metas creadas",
+  
+  "loading": "Cargando...",
+  "error": "Error",
+  "success": "Éxito",
+  "confirm": "Confirmar",
+  "yes": "Sí",
+  "no": "No",
+  
+  "authenticationError": "Error de autenticación",
+  "notAuthenticated": "No autenticado",
+  "retry": "Reintentar",
+  "signIn": "Iniciar sesión",
+  
+  "selectCategory": "Seleccionar Categoría",
+  "selectDate": "Seleccionar Fecha",
+  "enterAmount": "Ingresar Monto",
+  "enterDescription": "Ingresar Descripción",
+  
+  "food": "Comida",
+  "transport": "Transporte",
+  "entertainment": "Entretenimiento",
+  "health": "Salud",
+  "education": "Educación",
+  "shopping": "Compras",
+  "bills": "Facturas",
+  "salary": "Salario",
+  "other": "Otro"
+}
