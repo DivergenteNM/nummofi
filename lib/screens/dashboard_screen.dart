@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../core/providers/finance_provider.dart';
 import '../core/theme/app_theme.dart';
 import '../core/utils/currency_formatter.dart';
+import 'close_month_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -15,19 +16,51 @@ class DashboardScreen extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Título
           Text(
             'Resumen General',
             style: Theme.of(context).textTheme.displayMedium,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
+
+          // Botón para cerrar mes y generar reporte de IA
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                // Obtener el provider antes de navegar
+                final financeProvider = Provider.of<FinanceProvider>(context, listen: false);
+                
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (newContext) => ChangeNotifierProvider<FinanceProvider>.value(
+                      value: financeProvider,
+                      child: const CloseMonthScreen(),
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.analytics_outlined),
+              label: const Text('Generar Reporte IA'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
 
           // Saldos Actuales
           Text(
             'Saldos Actuales',
             style: Theme.of(context).textTheme.displaySmall,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           _buildBalanceCards(provider),
@@ -37,6 +70,7 @@ class DashboardScreen extends StatelessWidget {
           Text(
             'Movimiento Mensual',
             style: Theme.of(context).textTheme.displaySmall,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           _buildMonthlyMovementChart(provider),
@@ -44,8 +78,9 @@ class DashboardScreen extends StatelessWidget {
 
           // Flujo por Canal
           Text(
-            'Flujo de dinero por Canal',
+            'Distribución por Canal',
             style: Theme.of(context).textTheme.displaySmall,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           _buildChannelFlowChart(provider),
@@ -107,133 +142,337 @@ class DashboardScreen extends StatelessWidget {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: SizedBox(
-          height: 250,
-          child: BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.spaceAround,
-              maxY: [provider.totalIncome, provider.totalExpenses]
-                      .reduce((a, b) => a > b ? a : b) *
-                  1.2,
-              barTouchData: BarTouchData(enabled: true),
-              titlesData: FlTitlesData(
-                show: true,
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      switch (value.toInt()) {
-                        case 0:
-                          return const Text('Ingresos');
-                        case 1:
-                          return const Text('Egresos');
-                        default:
-                          return const Text('');
-                      }
+        child: Column(
+          children: [
+            SizedBox(
+              height: 280,
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceAround,
+                  maxY: [provider.totalIncome, provider.totalExpenses]
+                          .reduce((a, b) => a > b ? a : b) *
+                      1.3,
+                  barTouchData: BarTouchData(enabled: false),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          switch (value.toInt()) {
+                            case 0:
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 8),
+                                child: Text(
+                                  'Ingresos',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              );
+                            case 1:
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 8),
+                                child: Text(
+                                  'Egresos',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              );
+                            default:
+                              return const Text('');
+                          }
+                        },
+                      ),
+                    ),
+                    leftTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                  ),
+                  gridData: FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
+                    horizontalInterval: provider.totalIncome > 0 
+                        ? (provider.totalIncome / 4) 
+                        : 100000,
+                    getDrawingHorizontalLine: (value) {
+                      return FlLine(
+                        color: Colors.grey[300],
+                        strokeWidth: 1,
+                      );
                     },
                   ),
-                ),
-                leftTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-              ),
-              borderData: FlBorderData(show: false),
-              barGroups: [
-                BarChartGroupData(
-                  x: 0,
-                  barRods: [
-                    BarChartRodData(
-                      toY: provider.totalIncome,
-                      color: AppColors.income,
-                      width: 40,
+                  borderData: FlBorderData(show: false),
+                  barGroups: [
+                    BarChartGroupData(
+                      x: 0,
+                      barRods: [
+                        BarChartRodData(
+                          toY: provider.totalIncome > 0 ? provider.totalIncome : 0.1,
+                          color: AppColors.income,
+                          width: 60,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(6),
+                          ),
+                        ),
+                      ],
+                    ),
+                    BarChartGroupData(
+                      x: 1,
+                      barRods: [
+                        BarChartRodData(
+                          toY: provider.totalExpenses > 0 ? provider.totalExpenses : 0.1,
+                          color: AppColors.expense,
+                          width: 60,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(6),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                BarChartGroupData(
-                  x: 1,
-                  barRods: [
-                    BarChartRodData(
-                      toY: provider.totalExpenses,
-                      color: AppColors.expense,
-                      width: 40,
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Valores estáticos
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: AppColors.income,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Ingresos',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      CurrencyFormatter.formatCurrency(provider.totalIncome),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.income,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: AppColors.expense,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Egresos',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      CurrencyFormatter.formatCurrency(provider.totalExpenses),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.expense,
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildChannelFlowChart(FinanceProvider provider) {
+    // Filtrar canales con saldo positivo para la gráfica
+    final channelsWithBalance = provider.channelBalances
+        .where((c) => c.balance > 0)
+        .toList();
+
+    if (channelsWithBalance.isEmpty) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            children: [
+              Icon(Icons.account_balance_wallet, size: 64, color: Colors.grey[400]),
+              const SizedBox(height: 16),
+              Text(
+                'No hay saldos disponibles',
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final totalBalance = channelsWithBalance.fold(0.0, (sum, c) => sum + c.balance);
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: SizedBox(
-          height: 250,
-          child: BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.spaceAround,
-              maxY: provider.channelBalances
-                      .map((c) => c.balance.abs())
-                      .reduce((a, b) => a > b ? a : b) *
-                  1.2,
-              minY: -provider.channelBalances
-                      .map((c) => c.balance.abs())
-                      .reduce((a, b) => a > b ? a : b) *
-                  1.2,
-              barTouchData: BarTouchData(enabled: true),
-              titlesData: FlTitlesData(
-                show: true,
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      if (value.toInt() < provider.channelBalances.length) {
-                        return Text(
-                          provider.channelBalances[value.toInt()].name,
-                          style: const TextStyle(fontSize: 12),
-                        );
-                      }
-                      return const Text('');
-                    },
+        child: Column(
+          children: [
+            SizedBox(
+              height: 250,
+              child: Row(
+                children: [
+                  // Gráfica de dona
+                  Expanded(
+                    flex: 2,
+                    child: PieChart(
+                      PieChartData(
+                        sectionsSpace: 2,
+                        centerSpaceRadius: 50,
+                        sections: channelsWithBalance.map((channel) {
+                          final percentage = (channel.balance / totalBalance * 100);
+                          return PieChartSectionData(
+                            color: _getChannelColor(channel.name),
+                            value: channel.balance,
+                            title: '${percentage.toStringAsFixed(1)}%',
+                            radius: 60,
+                            titleStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
-                ),
-                leftTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-              ),
-              borderData: FlBorderData(show: false),
-              barGroups: provider.channelBalances
-                  .asMap()
-                  .entries
-                  .map((entry) => BarChartGroupData(
-                        x: entry.key,
-                        barRods: [
-                          BarChartRodData(
-                            toY: entry.value.balance,
-                            color: _getChannelColor(entry.value.name),
-                            width: 40,
+                  const SizedBox(width: 24),
+                  // Leyenda con valores
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: channelsWithBalance.map((channel) {
+                        final percentage = (channel.balance / totalBalance * 100);
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: _getChannelColor(channel.name),
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      channel.name,
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      CurrencyFormatter.formatCurrency(channel.balance),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: _getChannelColor(channel.name),
+                                      ),
+                                    ),
+                                    Text(
+                                      '${percentage.toStringAsFixed(1)}%',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ))
-                  .toList(),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+            const SizedBox(height: 16),
+            // Total
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Total Disponible',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    CurrencyFormatter.formatCurrency(totalBalance),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.success,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

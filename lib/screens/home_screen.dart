@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../core/providers/finance_provider.dart';
 import '../core/theme/app_theme.dart';
 import 'dashboard_screen.dart';
@@ -31,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FinanceProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -93,30 +95,30 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppColors.info,
         unselectedItemColor: Colors.grey,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            icon: const Icon(Icons.dashboard),
+            label: l10n.dashboard,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
-            label: 'Transacciones',
+            icon: const Icon(Icons.add_circle_outline),
+            label: l10n.transactions,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: 'Presupuestos',
+            icon: const Icon(Icons.account_balance_wallet),
+            label: l10n.budgets,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart),
-            label: 'Reportes',
+            icon: const Icon(Icons.pie_chart),
+            label: l10n.reports,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Historial',
+            icon: const Icon(Icons.history),
+            label: l10n.history,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.flag),
-            label: 'Metas',
+            icon: const Icon(Icons.flag),
+            label: l10n.goals,
           ),
         ],
       ),
@@ -124,9 +126,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String _getMonthName(int month) {
-    const months = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    final months = [
+      AppLocalizations.of(context)!.january,
+      AppLocalizations.of(context)!.february,
+      AppLocalizations.of(context)!.march,
+      AppLocalizations.of(context)!.april,
+      AppLocalizations.of(context)!.may,
+      AppLocalizations.of(context)!.june,
+      AppLocalizations.of(context)!.july,
+      AppLocalizations.of(context)!.august,
+      AppLocalizations.of(context)!.september,
+      AppLocalizations.of(context)!.october,
+      AppLocalizations.of(context)!.november,
+      AppLocalizations.of(context)!.december,
     ];
     return months[month - 1];
   }

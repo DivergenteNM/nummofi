@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
 import 'core/theme/app_theme.dart';
 import 'core/services/auth_service.dart';
 import 'core/services/firestore_service.dart';
@@ -8,11 +11,14 @@ import 'core/providers/finance_provider.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  // Preservar el splash screen hasta que la app esté lista
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   // Inicializar Firebase
   await Firebase.initializeApp();
-  
+
   runApp(const MyApp());
 }
 
@@ -22,9 +28,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'NummoFi - Gestión Financiera',
+      title: 'NummoFi',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
+      theme: AppTheme.lightTheme, 
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      
+      // Configuración de localización
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es', ''), // Español
+        Locale('en', ''), // Inglés
+      ],
+      locale: const Locale('es', ''), // Idioma por defecto: Español
+      
       home: const AuthWrapper(),
     );
   }
@@ -55,22 +77,26 @@ class _AuthWrapperState extends State<AuthWrapper> {
       setState(() {
         _isLoading = false;
       });
+
+      // Remover el splash screen cuando la autenticación esté lista
+      FlutterNativeSplash.remove();
     } catch (e) {
       setState(() {
         _error = e.toString();
         _isLoading = false;
       });
+
+      // Remover el splash screen incluso si hay error
+      FlutterNativeSplash.remove();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (_error != null) {
@@ -81,13 +107,13 @@ class _AuthWrapperState extends State<AuthWrapper> {
             children: [
               const Icon(Icons.error_outline, size: 64, color: Colors.red),
               const SizedBox(height: 16),
-              const Text('Error de autenticación'),
+              Text(l10n?.authenticationError ?? 'Error de autenticación'),
               const SizedBox(height: 8),
               Text(_error!),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _initializeAuth,
-                child: const Text('Reintentar'),
+                child: Text(l10n?.retry ?? 'Reintentar'),
               ),
             ],
           ),
@@ -100,9 +126,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
 
@@ -111,9 +135,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
           final appId = 'default-app-id'; // Puedes configurar esto
 
           return ChangeNotifierProvider(
-            create: (_) => FinanceProvider(
-              FirestoreService(appId: appId, userId: userId),
-            ),
+            create: (_) =>
+                FinanceProvider(FirestoreService(appId: appId, userId: userId)),
             child: const HomeScreen(),
           );
         }
@@ -123,11 +146,11 @@ class _AuthWrapperState extends State<AuthWrapper> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('No autenticado'),
+                Text(l10n?.notAuthenticated ?? 'No autenticado'),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _initializeAuth,
-                  child: const Text('Iniciar sesión'),
+                  child: Text(l10n?.signIn ?? 'Iniciar sesión'),
                 ),
               ],
             ),
