@@ -153,7 +153,7 @@ La integración con Inteligencia Artificial está **100% completa y funcional**.
 **Headers:**
 ```
 Content-Type: application/json
-Authorization: Bearer AIzaSyAqLktvzvKpi4BiuDRq9qjnDJBheW_fGM4
+Authorization: Bearer $token
 ```
 
 **Body:** JSON del reporte mensual (ejemplo en `ejemplo_reporte.json`)
@@ -266,7 +266,7 @@ Authorization: Bearer AIzaSyAqLktvzvKpi4BiuDRq9qjnDJBheW_fGM4
 
 ### API Key Actual:
 ```dart
-static const String apiKey = 'AIzaSyAqLktvzvKpi4BiuDRq9qjnDJBheW_fGM4';
+static const String apiKey = token.env;
 ```
 
 ⚠️ **IMPORTANTE:** Esta key está hardcodeada en el código. Para producción, considera:
