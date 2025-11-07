@@ -191,6 +191,7 @@ class AppColors {
   
   static const Color income = Color(0xFF10B981); // green-500
   static const Color expense = Color(0xFFEF4444); // red-500
+  static const Color transfer = Color(0xFF3B82F6); // blue-500
   
   static const Color nequi = Color(0xFF9B59B6); // purple
   static const Color nubank = Color(0xFF8B5CF6); // violet
