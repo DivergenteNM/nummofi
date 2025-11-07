@@ -1167,47 +1167,58 @@ class _GoalsScreenState extends State<GoalsScreen> {
   void _showInfoDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Row(
-          children: [
-            Icon(Icons.info_outline, color: Colors.blue),
-            SizedBox(width: 8),
-            Text('Sobre Metas y Logros'),
-          ],
-        ),
-        content: const SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Esta pantalla te ayuda a:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+      builder: (context) => Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: AlertDialog(
+            title: Row(
+              children: [
+                const Icon(Icons.info_outline, color: Colors.blue),
+                const SizedBox(width: 8),
+                // Permitir que el título haga wrap si es necesario
+                const Expanded(
+                  child: Text(
+                    'Sobre Metas y Logros',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            content: const SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Esta pantalla te ayuda a:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text('• Definir metas financieras'),
+                  Text('• Hacer seguimiento del progreso'),
+                  Text('• Agregar dinero a tus ahorros'),
+                  Text('• Ver tus logros alcanzados'),
+                  SizedBox(height: 16),
+                  Text(
+                    'Consejos:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text('• Define metas realistas'),
+                  Text('• Actualiza tu progreso regularmente'),
+                  Text('• Celebra cada logro alcanzado'),
+                  Text('• Usa el botón "+" para agregar dinero'),
+                ],
               ),
-              SizedBox(height: 8),
-              Text('• Definir metas financieras'),
-              Text('• Hacer seguimiento del progreso'),
-              Text('• Agregar dinero a tus ahorros'),
-              Text('• Ver tus logros alcanzados'),
-              SizedBox(height: 16),
-              Text(
-                'Consejos:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Entendido'),
               ),
-              SizedBox(height: 8),
-              Text('• Define metas realistas'),
-              Text('• Actualiza tu progreso regularmente'),
-              Text('• Celebra cada logro alcanzado'),
-              Text('• Usa el botón "+" para agregar dinero'),
             ],
           ),
         ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Entendido'),
-          ),
-        ],
       ),
     );
   }

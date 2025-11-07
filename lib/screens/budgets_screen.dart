@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../core/providers/finance_provider.dart';
 import '../data/models/budget_model.dart';
 import '../core/constants/app_constants.dart';
 import '../core/utils/currency_formatter.dart';
+import '../core/utils/number_formatter.dart';
 import '../core/theme/app_theme.dart';
 
 class BudgetsScreen extends StatefulWidget {
@@ -308,8 +310,9 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
           Expanded(
             flex: 2,
             child: TextFormField(
-              initialValue: currentValue > 0 ? currentValue.toStringAsFixed(0) : '',
+              initialValue: currentValue > 0 ? formatAmountWithThousands(currentValue.toInt()) : '',
               keyboardType: TextInputType.number,
+              inputFormatters: [ThousandsSeparatorFormatter()],
               decoration: InputDecoration(
                 isDense: true,
                 contentPadding: const EdgeInsets.symmetric(
@@ -323,7 +326,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
                 ),
               ),
               onChanged: (value) {
-                final numValue = double.tryParse(value) ?? 0;
+                final numValue = value.isEmpty ? 0.0 : parseAmountFromFormatted(value);
                 onChanged(numValue);
               },
             ),

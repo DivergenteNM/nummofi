@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../core/providers/finance_provider.dart';
 import '../data/models/transaction_model.dart';
 import '../core/constants/app_constants.dart';
 import '../core/utils/currency_formatter.dart';
+import '../core/utils/number_formatter.dart';
 import '../core/theme/app_theme.dart';
 
 class TransactionsScreen extends StatelessWidget {
@@ -103,7 +105,9 @@ class TransactionsScreen extends StatelessWidget {
               radius: 24,
               backgroundColor: transaction.type == 'Ingreso'
                   ? AppColors.income.withOpacity(0.15)
-                  : AppColors.expense.withOpacity(0.15),
+                  : transaction.type == 'Egreso'
+                  ? AppColors.expense.withOpacity(0.15)
+                  : AppColors.transfer.withOpacity(0.15),
               child: Icon(
                 transaction.type == 'Ingreso'
                     ? Icons.arrow_downward
@@ -112,7 +116,9 @@ class TransactionsScreen extends StatelessWidget {
                         : Icons.swap_horiz,
                 color: transaction.type == 'Ingreso'
                     ? AppColors.income
-                    : AppColors.expense,
+                    : transaction.type == 'Egreso'
+                        ? AppColors.expense
+                        : AppColors.transfer,
                 size: 20,
               ),
             ),
@@ -406,9 +412,14 @@ class _TransactionDialogState extends State<TransactionDialog> {
     _descriptionController = TextEditingController(
       text: widget.transaction?.description ?? '',
     );
-    _amountController = TextEditingController(
-      text: widget.transaction?.amount.toString() ?? '',
-    );
+    
+    // Formatea el monto con separadores de miles
+    String formattedAmount = '';
+    if (widget.transaction?.amount != null && widget.transaction!.amount > 0) {
+      formattedAmount = formatAmountWithThousands(widget.transaction!.amount.toInt());
+    }
+    
+    _amountController = TextEditingController(text: formattedAmount);
     _selectedDate = widget.transaction?.date ?? DateTime.now();
     _selectedType = widget.transaction?.type ?? 'Egreso';
     _selectedCategory = widget.transaction?.category ??
@@ -502,11 +513,13 @@ class _TransactionDialogState extends State<TransactionDialog> {
               // Monto
               TextField(
                 controller: _amountController,
+                inputFormatters: [ThousandsSeparatorFormatter()],
                 decoration: const InputDecoration(
                   labelText: 'Monto',
                   prefixText: '\$ ',
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  hintText: '0',
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -631,7 +644,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                 id: widget.transaction?.id,
                 date: _selectedDate,
                 description: _descriptionController.text,
-                amount: double.parse(_amountController.text),
+                amount: parseAmountFromFormatted(_amountController.text),
                 type: _selectedType,
                 category: _selectedCategory,
                 channel: _selectedChannel,
