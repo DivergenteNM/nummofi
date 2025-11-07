@@ -1,0 +1,78 @@
+{
+  "success": true,
+  "data": {
+    "resumen_ejecutivo": "Octubre de 2025 ha sido un mes con un excelente balance financiero. Sus ingresos totales alcanzaron los COP 2,500,000, generando un impresionante balance neto de COP 1,300,000 y una tasa de ahorro del 52%. Aunque hubo un crecimiento notable en los ingresos, se observaron sobrecostos en las categorías de Alimentación y Entretenimiento, lo que impidió cumplir el presupuesto general y requiere atención para acelerar el cumplimiento de sus metas de ahorro activas.",
+    "insights": [
+      {
+        "tipo": "alerta",
+        "categoria": "General de Egresos",
+        "mensaje": "No se cumplió el presupuesto general de egresos del mes, sobrepasándolo en COP 100,000. Específicamente, 'Alimentación' y 'Entretenimiento' superaron sus límites presupuestados.",
+        "recomendacion": "Revisar y ajustar los patrones de gasto en las categorías que excedieron el presupuesto para el próximo mes, buscando eficiencias donde sea posible.",
+        "impacto_estimado": "COP 150,000"
+      },
+      {
+        "tipo": "felicitacion",
+        "categoria": "Ingresos",
+        "mensaje": "¡Felicitaciones! Sus ingresos aumentaron un 8.7% con respecto al mes anterior, pasando de COP 2,300,000 a COP 2,500,000, demostrando un buen crecimiento financiero.",
+        "recomendacion": "Continuar explorando y potenciando sus fuentes de ingreso, especialmente la actividad 'Freelance', para mantener esta tendencia positiva.",
+        "impacto_estimado": "Potencial de crecimiento en COP 200,000+ mensuales"
+      },
+      {
+        "tipo": "recomendacion",
+        "categoria": "Metas de Ahorro",
+        "mensaje": "La meta de 'Comprar Laptop' tiene un 71.43% de cumplimiento, pero necesita COP 200,000 adicionales para ser alcanzada antes de la fecha objetivo (31 de diciembre de 2025). Esto implica ahorrar COP 100,000 mensuales adicionales en noviembre y diciembre.",
+        "recomendacion": "Priorizar el aporte mensual de COP 100,000 a la meta de la laptop, posiblemente reasignando fondos de categorías con sobrecosto o del excelente balance neto.",
+        "impacto_estimado": "Cumplimiento de meta por COP 200,000"
+      },
+      {
+        "tipo": "alerta",
+        "categoria": "Alimentación y Entretenimiento",
+        "mensaje": "Conjuntamente, 'Alimentación' (COP 500,000) y 'Entretenimiento' (COP 400,000) representan el 75% de sus egresos totales (COP 900,000 de COP 1,200,000). Esto indica una alta concentración de gastos en estas áreas.",
+        "recomendacion": "Analizar en detalle los gastos dentro de estas categorías para identificar oportunidades de optimización sin sacrificar su calidad de vida, liberando fondos para el ahorro.",
+        "impacto_estimado": "COP 50,000 - COP 100,000 mensuales"
+      },
+      {
+        "tipo": "info",
+        "categoria": "Otros",
+        "mensaje": "El gasto en la categoría 'Otros' fue de COP 100,000, lo que estuvo por debajo del presupuesto (COP 150,000). Sin embargo, la naturaleza genérica de esta categoría limita la visibilidad sobre su composición.",
+        "recomendacion": "Desglosar los gastos dentro de la categoría 'Otros' en subcategorías más específicas para tener un control más detallado y tomar decisiones más informadas.",
+        "impacto_estimado": "Mejora en la gestión financiera"
+      }
+    ],
+    "proyecciones": [
+      {
+        "descripcion": "Completar la meta de ahorro para 'Comprar Laptop'.",
+        "fecha_estimada": "2025-12-31",
+        "confianza": 0.85,
+        "detalles": "Asumiendo que se destinen los COP 100,000 adicionales necesarios cada mes de noviembre y diciembre."
+      },
+      {
+        "descripcion": "Acumulación de un fondo de emergencia equivalente a 3 meses de egresos (aproximadamente COP 3,600,000).",
+        "fecha_estimada": "2026-01-31",
+        "confianza": 0.75,
+        "detalles": "Se lograría manteniendo un balance neto mensual similar y destinando el excedente después de cumplir la meta de la laptop."
+      }
+    ],
+    "recomendaciones": [
+      "Implemente un sistema de seguimiento más riguroso para 'Alimentación' y 'Entretenimiento', buscando reducir COP 50,000 y COP 100,000 respectivamente para ajustarse a los presupuestos establecidos.",
+      "Priorice y destine los COP 100,000 adicionales necesarios cada mes (Noviembre y Diciembre) para asegurar el cumplimiento de su meta de 'Comprar Laptop' antes de finalizar el año.",
+      "Desglose y categorice de forma más específica los gastos incluidos en la categoría 'Otros' para obtener mayor claridad y control sobre estos egresos.",
+      "Considere destinar una porción estratégica de su excelente balance neto mensual de COP 1,300,000 al crecimiento de su fondo de emergencia, asegurando una mayor estabilidad financiera.",
+      "Explore activamente oportunidades para aumentar sus ingresos 'Freelance' o diversificar sus fuentes de ingreso para potenciar aún más su capacidad de ahorro e inversión."
+    ],
+    "puntuacion_salud_financiera": 82,
+    "areas_mejora": [
+      "Adherencia al presupuesto en categorías de alto consumo como Alimentación y Entretenimiento.",
+      "Aceleración y ajuste de los planes de ahorro para metas específicas a corto plazo.",
+      "Transparencia y categorización detallada de gastos en 'Otros'.",
+      "Establecimiento y crecimiento de un fondo de emergencia robusto."
+    ],
+    "fortalezas": [
+      "Capacidad sólida y creciente de generación de ingresos (COP 2,500,000 con un crecimiento del 8.7%).",
+      "Impresionante balance neto mensual de COP 1,300,000, lo que demuestra una excelente gestión entre ingresos y egresos.",
+      "Alta y disciplinada tasa de ahorro del 52% de sus ingresos, lo cual es fundamental para alcanzar objetivos financieros.",
+      "Gestión activa y progreso significativo hacia metas de ahorro específicas, como la 'Comprar Laptop' (71.43% de cumplimiento)."
+    ]
+  },
+  "timestamp": "2025-11-05T18:14:51.242Z"
+}
