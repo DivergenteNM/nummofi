@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../core/providers/finance_provider.dart';
+import '../core/providers/settings_provider.dart';
 import '../core/theme/app_theme.dart';
 import 'dashboard_screen.dart';
 import 'transactions_screen.dart';
@@ -83,6 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+        actions: [
+          _buildSettingsButton(context),
+        ],
       ),
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -141,5 +145,178 @@ class _HomeScreenState extends State<HomeScreen> {
       AppLocalizations.of(context)!.december,
     ];
     return months[month - 1];
+  }
+
+  /// Botón de configuración en la esquina superior derecha
+  Widget _buildSettingsButton(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final settingsProvider = Provider.of<SettingsProvider>(context);
+
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.settings),
+      tooltip: l10n.settings,
+      onSelected: (value) {
+        _handleSettingsMenuAction(context, value, settingsProvider, l10n);
+      },
+      itemBuilder: (BuildContext context) {
+        return [
+          // Título: Apariencia
+          PopupMenuItem<String>(
+            enabled: false,
+            child: Text(
+              l10n.appearance,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          // Modo Claro
+          PopupMenuItem<String>(
+            value: 'theme_light',
+            child: ListTile(
+              leading: Icon(
+                Icons.light_mode,
+                color: settingsProvider.themeMode == ThemeMode.light
+                    ? AppColors.info
+                    : null,
+              ),
+              title: Text(l10n.lightMode),
+              trailing: settingsProvider.themeMode == ThemeMode.light
+                  ? const Icon(Icons.check, color: AppColors.info)
+                  : null,
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+            ),
+          ),
+          // Modo Oscuro
+          PopupMenuItem<String>(
+            value: 'theme_dark',
+            child: ListTile(
+              leading: Icon(
+                Icons.dark_mode,
+                color: settingsProvider.themeMode == ThemeMode.dark
+                    ? AppColors.info
+                    : null,
+              ),
+              title: Text(l10n.darkMode),
+              trailing: settingsProvider.themeMode == ThemeMode.dark
+                  ? const Icon(Icons.check, color: AppColors.info)
+                  : null,
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+            ),
+          ),
+          // Modo Sistema
+          PopupMenuItem<String>(
+            value: 'theme_system',
+            child: ListTile(
+              leading: Icon(
+                Icons.brightness_auto,
+                color: settingsProvider.themeMode == ThemeMode.system
+                    ? AppColors.info
+                    : null,
+              ),
+              title: Text(l10n.systemMode),
+              trailing: settingsProvider.themeMode == ThemeMode.system
+                  ? const Icon(Icons.check, color: AppColors.info)
+                  : null,
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+            ),
+          ),
+          const PopupMenuDivider(),
+          // Título: Idioma
+          PopupMenuItem<String>(
+            enabled: false,
+            child: Text(
+              l10n.language,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          // Español
+          PopupMenuItem<String>(
+            value: 'locale_es',
+            child: ListTile(
+              leading: Icon(
+                Icons.language,
+                color: settingsProvider.locale.languageCode == 'es'
+                    ? AppColors.info
+                    : null,
+              ),
+              title: Text(l10n.spanish),
+              trailing: settingsProvider.locale.languageCode == 'es'
+                  ? const Icon(Icons.check, color: AppColors.info)
+                  : null,
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+            ),
+          ),
+          // Inglés
+          PopupMenuItem<String>(
+            value: 'locale_en',
+            child: ListTile(
+              leading: Icon(
+                Icons.language,
+                color: settingsProvider.locale.languageCode == 'en'
+                    ? AppColors.info
+                    : null,
+              ),
+              title: Text(l10n.english),
+              trailing: settingsProvider.locale.languageCode == 'en'
+                  ? const Icon(Icons.check, color: AppColors.info)
+                  : null,
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+            ),
+          ),
+        ];
+      },
+    );
+  }
+
+  /// Manejar las acciones del menú de configuración
+  void _handleSettingsMenuAction(
+    BuildContext context,
+    String value,
+    SettingsProvider settingsProvider,
+    AppLocalizations l10n,
+  ) {
+    switch (value) {
+      case 'theme_light':
+        settingsProvider.setThemeMode(ThemeMode.light);
+        _showSnackBar(context, l10n.themeChanged);
+        break;
+      case 'theme_dark':
+        settingsProvider.setThemeMode(ThemeMode.dark);
+        _showSnackBar(context, l10n.themeChanged);
+        break;
+      case 'theme_system':
+        settingsProvider.setThemeMode(ThemeMode.system);
+        _showSnackBar(context, l10n.themeChanged);
+        break;
+      case 'locale_es':
+        settingsProvider.setLocale(const Locale('es', ''));
+        _showSnackBar(context, l10n.languageChanged);
+        break;
+      case 'locale_en':
+        settingsProvider.setLocale(const Locale('en', ''));
+        _showSnackBar(context, l10n.languageChanged);
+        break;
+    }
+  }
+
+  /// Mostrar mensaje de confirmación
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 }
