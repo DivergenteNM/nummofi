@@ -843,14 +843,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
             onPressed: () async {
               final amount = double.tryParse(amountController.text) ?? 0;
               if (amount <= 0) {
-                ScaffoldMessenger.of(context).showSnackBar(
+                ScaffoldMessenger.of(dialogContext).showSnackBar(
                   const SnackBar(
                     content: Text('Ingresa un monto válido'),
                     backgroundColor: Colors.orange,
@@ -863,8 +863,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 final newAmount = goal.currentAmount + amount;
                 await provider.updateGoalProgress(goal.id!, newAmount);
 
-                if (context.mounted) {
-                  Navigator.pop(context);
+                if (dialogContext.mounted) {
+                  Navigator.pop(dialogContext);
                   
                   // Si se completó la meta, mostrar celebración
                   if (newAmount >= goal.targetAmount) {
@@ -886,8 +886,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   }
                 }
               } catch (e) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                if (dialogContext.mounted) {
+                  ScaffoldMessenger.of(dialogContext).showSnackBar(
                     SnackBar(
                       content: Text('Error: $e'),
                       backgroundColor: Colors.red,
@@ -911,7 +911,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
             Text(
@@ -997,14 +997,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
           if (!goal.isCompleted)
             TextButton.icon(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
                 _showAddMoneyDialog(context, goal);
               },
               icon: const Icon(Icons.add_circle_outline),
               label: const Text('Agregar Dinero'),
             ),
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cerrar'),
           ),
         ],
@@ -1043,7 +1043,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
   void _showCelebrationDialog(BuildContext context, GoalModel goal) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      barrierDismissible: false,
+      builder: (celebrationContext) => AlertDialog(
         title: const Column(
           children: [
             Icon(Icons.emoji_events, color: Colors.amber, size: 64),
@@ -1092,7 +1093,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
         ),
         actions: [
           ElevatedButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(celebrationContext),
             child: const Text('¡Genial!'),
           ),
         ],
@@ -1118,7 +1119,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
         content: Text('¿Estás seguro de eliminar "${goal.title}"?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
@@ -1126,8 +1127,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
               try {
                 await provider.deleteGoal(goal.id!);
 
-                if (context.mounted) {
-                  Navigator.pop(context);
+                if (dialogContext.mounted) {
+                  Navigator.pop(dialogContext);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Row(
@@ -1142,8 +1143,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   );
                 }
               } catch (e) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                if (dialogContext.mounted) {
+                  ScaffoldMessenger.of(dialogContext).showSnackBar(
                     SnackBar(
                       content: Text('Error: $e'),
                       backgroundColor: Colors.red,

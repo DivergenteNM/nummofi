@@ -266,8 +266,13 @@ class TransactionsScreen extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () {
+                      // Guardar el contexto principal antes de cerrar el sheet
+                      final mainContext = Navigator.of(context).context;
                       Navigator.pop(context);
-                      _showTransactionDialog(context, transaction);
+                      // Usar el contexto principal para abrir el diálogo
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        _showTransactionDialog(mainContext, transaction);
+                      });
                     },
                     icon: const Icon(Icons.edit),
                     label: const Text('Editar'),
@@ -280,8 +285,13 @@ class TransactionsScreen extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () {
+                      // Guardar el contexto principal antes de cerrar el sheet
+                      final mainContext = Navigator.of(context).context;
                       Navigator.pop(context);
-                      _showDeleteDialog(context, transaction, provider);
+                      // Usar el contexto principal para abrir el diálogo
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        _showDeleteDialog(mainContext, transaction, provider);
+                      });
                     },
                     icon: const Icon(Icons.delete),
                     label: const Text('Eliminar'),

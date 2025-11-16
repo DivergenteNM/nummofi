@@ -437,75 +437,133 @@ class _HistoryScreenState extends State<HistoryScreen> {
       );
     }
 
-    final totalBudget = summary.budgetComparison['totalBudget']?.toDouble() ?? 0;
-    final totalSpent = summary.budgetComparison['totalSpent']?.toDouble() ?? 0;
-    final percentage = totalBudget > 0 ? (totalSpent / totalBudget * 100) : 0;
+    // Extraer datos de la comparación presupuestaria
+    final incomeBudget = summary.budgetComparison['income'] as Map<String, dynamic>? ?? {};
+    final expenseBudget = summary.budgetComparison['expense'] as Map<String, dynamic>? ?? {};
+    
+    final plannedIncome = (incomeBudget['planned'] ?? 0).toDouble();
+    final actualIncome = (incomeBudget['actual'] ?? 0).toDouble();
+    final plannedExpense = (expenseBudget['planned'] ?? 0).toDouble();
+    final actualExpense = (expenseBudget['actual'] ?? 0).toDouble();
+    
+    final expensePercentage = plannedExpense > 0 ? (actualExpense / plannedExpense * 100) : 0;
 
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: percentage > 100 ? Colors.red[50] : Colors.green[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: percentage > 100 ? Colors.red[200]! : Colors.green[200]!,
-        ),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Presupuestado',
-                style: TextStyle(fontSize: 13),
-              ),
-              Text(
-                CurrencyFormatter.formatCurrency(totalBudget),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
-              ),
-            ],
+    return Column(
+      children: [
+        // Comparación de ingresos
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.green[50],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.green[200]!),
           ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Gastado',
-                style: TextStyle(fontSize: 13),
-              ),
-              Text(
-                CurrencyFormatter.formatCurrency(totalSpent),
+                'Ingresos',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
-                  color: percentage > 100 ? Colors.red : Colors.black,
+                  color: Colors.green,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Presupuestado', style: TextStyle(fontSize: 12)),
+                  Text(
+                    CurrencyFormatter.formatCurrency(plannedIncome),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Real', style: TextStyle(fontSize: 12)),
+                  Text(
+                    CurrencyFormatter.formatCurrency(actualIncome),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        // Comparación de egresos
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: expensePercentage > 100 ? Colors.red[50] : Colors.green[50],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: expensePercentage > 100 ? Colors.red[200]! : Colors.green[200]!,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Egresos',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: Colors.red,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Presupuestado', style: TextStyle(fontSize: 12)),
+                  Text(
+                    CurrencyFormatter.formatCurrency(plannedExpense),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Real', style: TextStyle(fontSize: 12)),
+                  Text(
+                    CurrencyFormatter.formatCurrency(actualExpense),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: expensePercentage > 100 ? Colors.red : Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              LinearProgressIndicator(
+                value: (expensePercentage / 100).clamp(0, 1),
+                backgroundColor: Colors.grey[300],
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  expensePercentage > 100 ? Colors.red : Colors.green,
+                ),
+                minHeight: 8,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '${expensePercentage.toStringAsFixed(1)}% del presupuesto',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: expensePercentage > 100 ? Colors.red : Colors.green,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          LinearProgressIndicator(
-            value: (percentage / 100).clamp(0, 1),
-            backgroundColor: Colors.grey[300],
-            valueColor: AlwaysStoppedAnimation<Color>(
-              percentage > 100 ? Colors.red : Colors.green,
-            ),
-            minHeight: 8,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${percentage.toStringAsFixed(1)}% del presupuesto',
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.bold,
-              color: percentage > 100 ? Colors.red : Colors.green,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
