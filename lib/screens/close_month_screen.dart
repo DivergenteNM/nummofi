@@ -131,7 +131,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
                   _buildInfoItem('📈 Comparación con el mes anterior'),
                   _buildInfoItem('🎯 Cumplimiento de presupuesto'),
                   _buildInfoItem('🏦 Balance de canales (bancos/efectivo)'),
-                  _buildInfoItem('🤖 Formato JSON para análisis de IA'),
+                  _buildInfoItem('🤖 Análisis inteligente de tus finanzas'),
                 ],
               ),
             ),
@@ -197,8 +197,12 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
           _buildSummaryCard(),
           const SizedBox(height: 16),
 
-          // Sección de JSON
-          _buildJsonSection(),
+          // Detalles por categorías (reemplaza la sección JSON)
+          _buildCategoriesBreakdown(),
+          const SizedBox(height: 16),
+
+          // Información de canales
+          _buildChannelsInfo(),
           const SizedBox(height: 24),
 
           // Botones de acción
@@ -220,49 +224,53 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _copyJsonToClipboard,
-                  icon: const Icon(Icons.copy),
-                  label: const Text('Copiar JSON'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _shareJson,
-                  icon: const Icon(Icons.share),
-                  label: const Text('Compartir'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
-            ],
-          ),
           const SizedBox(height: 12),
+          
+          // Botón secundario: Ver Historial
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: () {
-                setState(() {
-                  _generatedReport = null;
-                  _jsonOutput = null;
-                });
+                // TODO: Navegar a pantalla de historial de reportes
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Próximamente: Historial de reportes'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
               },
-              icon: const Icon(Icons.refresh),
-              label: const Text('Generar Nuevo Reporte'),
+              icon: const Icon(Icons.history),
+              label: const Text('Ver Historial de Reportes'),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
             ),
+          ),
+          const SizedBox(height: 12),
+          
+          // Opciones avanzadas en un menú desplegable
+          ExpansionTile(
+            leading: const Icon(Icons.more_horiz),
+            title: const Text('Opciones avanzadas'),
+            children: [
+              ListTile(
+                leading: const Icon(Icons.code),
+                title: const Text('Copiar datos técnicos'),
+                subtitle: const Text('JSON para desarrolladores'),
+                onTap: _copyJsonToClipboard,
+              ),
+              ListTile(
+                leading: const Icon(Icons.refresh),
+                title: const Text('Generar nuevo reporte'),
+                subtitle: const Text('Volver a calcular los datos'),
+                onTap: () {
+                  setState(() {
+                    _generatedReport = null;
+                    _jsonOutput = null;
+                  });
+                },
+              ),
+            ],
           ),
         ],
       ),
@@ -353,40 +361,207 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
     );
   }
 
-  Widget _buildJsonSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'JSON para IA',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[700]!),
-          ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SelectableText(
-              _jsonOutput ?? '',
-              style: const TextStyle(
-                fontFamily: 'monospace',
-                fontSize: 12,
-                color: Colors.greenAccent,
-              ),
+  Widget _buildCategoriesBreakdown() {
+    final report = _generatedReport!;
+    
+    // Top 5 categorías de egresos
+    final topExpenses = report.egresosPorCategoria.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    final top5Expenses = topExpenses.take(5).toList();
+
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.pie_chart, color: Colors.deepPurple),
+                const SizedBox(width: 8),
+                const Text(
+                  'Top Categorías de Gastos',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-          ),
+            const SizedBox(height: 16),
+            if (top5Expenses.isEmpty)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    'No hay gastos registrados este mes',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+              )
+            else
+              ...top5Expenses.map((entry) {
+                final percentage = report.egresosTotal > 0 
+                    ? (entry.value / report.egresosTotal * 100) 
+                    : 0.0;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              entry.key,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            CurrencyFormatter.formatCurrency(entry.value),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: LinearProgressIndicator(
+                              value: percentage / 100,
+                              backgroundColor: Colors.grey[200],
+                              color: Colors.red[400],
+                              minHeight: 6,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${percentage.toStringAsFixed(1)}%',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+          ],
         ),
-      ],
+      ),
     );
+  }
+
+  Widget _buildChannelsInfo() {
+    final report = _generatedReport!;
+    
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.account_balance_wallet, color: Colors.blue),
+                const SizedBox(width: 8),
+                const Text(
+                  'Balance por Canal',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            if (report.saldoPorCanal.isEmpty)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    'No hay información de canales',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+              )
+            else
+              ...report.saldoPorCanal.entries.map((entry) {
+                final isPositive = entry.value >= 0;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isPositive ? Colors.green[50] : Colors.red[50],
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: isPositive ? Colors.green[200]! : Colors.red[200]!,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              _getChannelIcon(entry.key),
+                              color: isPositive ? Colors.green[700] : Colors.red[700],
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              entry.key,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          CurrencyFormatter.formatCurrency(entry.value),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: isPositive ? Colors.green[700] : Colors.red[700],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconData _getChannelIcon(String channel) {
+    switch (channel.toLowerCase()) {
+      case 'nequi':
+        return Icons.phone_android;
+      case 'nubank':
+        return Icons.credit_card;
+      case 'efectivo':
+        return Icons.money;
+      default:
+        return Icons.account_balance_wallet;
+    }
   }
 
   Future<void> _generateReport(BuildContext context, int month, int year) async {
@@ -463,7 +638,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
             children: [
               Icon(Icons.check_circle, color: Colors.white),
               SizedBox(width: 8),
-              Text('JSON copiado al portapapeles'),
+              Text('Datos técnicos copiados al portapapeles'),
             ],
           ),
           backgroundColor: Colors.green,
@@ -553,21 +728,6 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
           ),
         );
       }
-    }
-  }
-
-  void _shareJson() {
-    // Aquí puedes implementar compartir el JSON
-    // Por ejemplo, usando el paquete share_plus
-    if (_jsonOutput != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Función de compartir - Implementar con share_plus'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      // Para implementar:
-      // Share.share(_jsonOutput!, subject: 'Reporte Financiero ${_generatedReport!.mes}');
     }
   }
 
