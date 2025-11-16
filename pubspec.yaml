@@ -32,6 +32,7 @@ dependencies:
   
   # Utils
   uuid: ^4.5.1
+  shared_preferences: ^2.3.3
   
   # HTTP para integración con IA (cuando esté lista)
   http: ^1.2.0

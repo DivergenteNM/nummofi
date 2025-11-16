@@ -8,6 +8,7 @@ import 'core/theme/app_theme.dart';
 import 'core/services/auth_service.dart';
 import 'core/services/firestore_service.dart';
 import 'core/providers/finance_provider.dart';
+import 'core/providers/settings_provider.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
@@ -19,7 +20,16 @@ void main() async {
   // Inicializar Firebase
   await Firebase.initializeApp();
 
-  runApp(const MyApp());
+  // Crear e inicializar SettingsProvider
+  final settingsProvider = SettingsProvider();
+  await settingsProvider.initialize();
+
+  runApp(
+    ChangeNotifierProvider.value(
+      value: settingsProvider,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,12 +37,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settingsProvider = Provider.of<SettingsProvider>(context);
+    
     return MaterialApp(
       title: 'NummoFi',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme, 
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: settingsProvider.themeMode,
       
       // Configuración de localización
       localizationsDelegates: const [
@@ -45,7 +57,7 @@ class MyApp extends StatelessWidget {
         Locale('es', ''), // Español
         Locale('en', ''), // Inglés
       ],
-      locale: const Locale('es', ''), // Idioma por defecto: Español
+      locale: settingsProvider.locale,
       
       home: const AuthWrapper(),
     );
