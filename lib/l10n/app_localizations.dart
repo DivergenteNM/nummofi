@@ -619,6 +619,462 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get other;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @lightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mode'**
+  String get lightMode;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @systemMode.
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get systemMode;
+
+  /// No description provided for @spanish.
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get spanish;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @themeChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme changed'**
+  String get themeChanged;
+
+  /// No description provided for @languageChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Language changed'**
+  String get languageChanged;
+
+  /// No description provided for @generalSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'General Summary'**
+  String get generalSummary;
+
+  /// No description provided for @generateAIReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate AI Report'**
+  String get generateAIReport;
+
+  /// No description provided for @currentBalances.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Balances'**
+  String get currentBalances;
+
+  /// No description provided for @monthlyMovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Movement'**
+  String get monthlyMovement;
+
+  /// No description provided for @channelDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel Distribution'**
+  String get channelDistribution;
+
+  /// No description provided for @incomes.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomes'**
+  String get incomes;
+
+  /// No description provided for @expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expenses;
+
+  /// No description provided for @noBalancesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No balances available'**
+  String get noBalancesAvailable;
+
+  /// No description provided for @totalAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Available'**
+  String get totalAvailable;
+
+  /// No description provided for @monthlyBudgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Budgets'**
+  String get monthlyBudgets;
+
+  /// No description provided for @planned.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get planned;
+
+  /// No description provided for @actual.
+  ///
+  /// In en, this message translates to:
+  /// **'Actual'**
+  String get actual;
+
+  /// No description provided for @incomeBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Budget'**
+  String get incomeBudget;
+
+  /// No description provided for @expenseBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Budget'**
+  String get expenseBudget;
+
+  /// No description provided for @incomeComparison.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Comparison by Category'**
+  String get incomeComparison;
+
+  /// No description provided for @expenseComparison.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Comparison by Category'**
+  String get expenseComparison;
+
+  /// No description provided for @budgetsSavedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Budgets saved successfully'**
+  String get budgetsSavedSuccessfully;
+
+  /// No description provided for @errorSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving'**
+  String get errorSaving;
+
+  /// No description provided for @monthlyAIReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly AI Report'**
+  String get monthlyAIReport;
+
+  /// No description provided for @generateMonthlyAIReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Monthly Report with AI'**
+  String get generateMonthlyAIReport;
+
+  /// No description provided for @generateCompleteReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a complete report with AI analysis'**
+  String get generateCompleteReport;
+
+  /// No description provided for @generating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating report...'**
+  String get generating;
+
+  /// No description provided for @whatIncludes.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s included?'**
+  String get whatIncludes;
+
+  /// No description provided for @summaryIncomeExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'📊 Income and expense summary'**
+  String get summaryIncomeExpenses;
+
+  /// No description provided for @savingsGoalsTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Savings goals tracking'**
+  String get savingsGoalsTracking;
+
+  /// No description provided for @categoryBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'💰 Category breakdown'**
+  String get categoryBreakdown;
+
+  /// No description provided for @channelAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'📱 Channel analysis (Nequi, NuBank, Cash)'**
+  String get channelAnalysis;
+
+  /// No description provided for @aiIntelligentAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'🤖 Intelligent analysis of your finances'**
+  String get aiIntelligentAnalysis;
+
+  /// No description provided for @reportGeneratedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Report generated successfully!'**
+  String get reportGeneratedSuccessfully;
+
+  /// No description provided for @yourDataIsReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data is ready for AI analysis'**
+  String get yourDataIsReady;
+
+  /// No description provided for @summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summary;
+
+  /// No description provided for @savingsGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings Goals'**
+  String get savingsGoals;
+
+  /// No description provided for @activeSavings.
+  ///
+  /// In en, this message translates to:
+  /// **'active'**
+  String get activeSavings;
+
+  /// No description provided for @savedInGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved in Goals'**
+  String get savedInGoals;
+
+  /// No description provided for @totalTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Transactions'**
+  String get totalTransactions;
+
+  /// No description provided for @savingsPercentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings %'**
+  String get savingsPercentage;
+
+  /// No description provided for @topCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Expense Categories'**
+  String get topCategories;
+
+  /// No description provided for @noExpensesRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses recorded'**
+  String get noExpensesRecorded;
+
+  /// No description provided for @channels.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels'**
+  String get channels;
+
+  /// No description provided for @noChannelsRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'No channels recorded'**
+  String get noChannelsRecorded;
+
+  /// No description provided for @analyzeWithAI.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze with AI'**
+  String get analyzeWithAI;
+
+  /// No description provided for @viewReportsHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'View Reports History'**
+  String get viewReportsHistory;
+
+  /// No description provided for @advancedOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced options'**
+  String get advancedOptions;
+
+  /// No description provided for @copyTechnicalData.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy technical data (JSON)'**
+  String get copyTechnicalData;
+
+  /// No description provided for @exportToExcel.
+  ///
+  /// In en, this message translates to:
+  /// **'Export to Excel'**
+  String get exportToExcel;
+
+  /// No description provided for @technicalDataCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical data copied to clipboard'**
+  String get technicalDataCopied;
+
+  /// No description provided for @reportGeneratedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Report generated successfully'**
+  String get reportGeneratedSuccess;
+
+  /// No description provided for @errorGeneratingReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating report'**
+  String get errorGeneratingReport;
+
+  /// No description provided for @analyzingWithAI.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing with AI...'**
+  String get analyzingWithAI;
+
+  /// No description provided for @pleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait...'**
+  String get pleaseWait;
+
+  /// No description provided for @errorAnalyzingAI.
+  ///
+  /// In en, this message translates to:
+  /// **'Error analyzing with AI'**
+  String get errorAnalyzingAI;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewDetails;
+
+  /// No description provided for @financialAIAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial AI Analysis'**
+  String get financialAIAnalysis;
+
+  /// No description provided for @executiveSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'📊 Executive Summary'**
+  String get executiveSummary;
+
+  /// No description provided for @yourStrengths.
+  ///
+  /// In en, this message translates to:
+  /// **'💪 Your Strengths'**
+  String get yourStrengths;
+
+  /// No description provided for @detailedAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'💡 Detailed Analysis'**
+  String get detailedAnalysis;
+
+  /// No description provided for @projections.
+  ///
+  /// In en, this message translates to:
+  /// **'🔮 Projections'**
+  String get projections;
+
+  /// No description provided for @recommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Recommendations'**
+  String get recommendations;
+
+  /// No description provided for @improvementAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'📈 Improvement Areas'**
+  String get improvementAreas;
+
+  /// No description provided for @financialHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Health'**
+  String get financialHealth;
+
+  /// No description provided for @excellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent!'**
+  String get excellent;
+
+  /// No description provided for @veryGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Very Good'**
+  String get veryGood;
+
+  /// No description provided for @canImprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Can Improve'**
+  String get canImprove;
+
+  /// No description provided for @needsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Attention'**
+  String get needsAttention;
+
+  /// No description provided for @confidence.
+  ///
+  /// In en, this message translates to:
+  /// **'confidence'**
+  String get confidence;
+
+  /// No description provided for @impact.
+  ///
+  /// In en, this message translates to:
+  /// **'Impact'**
+  String get impact;
 }
 
 class _AppLocalizationsDelegate

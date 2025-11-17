@@ -268,4 +268,234 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get other => 'Other';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get lightMode => 'Light Mode';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get systemMode => 'System Default';
+
+  @override
+  String get spanish => 'Spanish';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get themeChanged => 'Theme changed';
+
+  @override
+  String get languageChanged => 'Language changed';
+
+  @override
+  String get generalSummary => 'General Summary';
+
+  @override
+  String get generateAIReport => 'Generate AI Report';
+
+  @override
+  String get currentBalances => 'Current Balances';
+
+  @override
+  String get monthlyMovement => 'Monthly Movement';
+
+  @override
+  String get channelDistribution => 'Channel Distribution';
+
+  @override
+  String get incomes => 'Incomes';
+
+  @override
+  String get expenses => 'Expenses';
+
+  @override
+  String get noBalancesAvailable => 'No balances available';
+
+  @override
+  String get totalAvailable => 'Total Available';
+
+  @override
+  String get monthlyBudgets => 'Monthly Budgets';
+
+  @override
+  String get planned => 'Planned';
+
+  @override
+  String get actual => 'Actual';
+
+  @override
+  String get incomeBudget => 'Income Budget';
+
+  @override
+  String get expenseBudget => 'Expense Budget';
+
+  @override
+  String get incomeComparison => 'Income Comparison by Category';
+
+  @override
+  String get expenseComparison => 'Expense Comparison by Category';
+
+  @override
+  String get budgetsSavedSuccessfully => 'Budgets saved successfully';
+
+  @override
+  String get errorSaving => 'Error saving';
+
+  @override
+  String get monthlyAIReport => 'Monthly AI Report';
+
+  @override
+  String get generateMonthlyAIReport => 'Generate Monthly Report with AI';
+
+  @override
+  String get generateCompleteReport =>
+      'Generate a complete report with AI analysis';
+
+  @override
+  String get generating => 'Generating report...';
+
+  @override
+  String get whatIncludes => 'What\'s included?';
+
+  @override
+  String get summaryIncomeExpenses => '📊 Income and expense summary';
+
+  @override
+  String get savingsGoalsTracking => '🎯 Savings goals tracking';
+
+  @override
+  String get categoryBreakdown => '💰 Category breakdown';
+
+  @override
+  String get channelAnalysis => '📱 Channel analysis (Nequi, NuBank, Cash)';
+
+  @override
+  String get aiIntelligentAnalysis =>
+      '🤖 Intelligent analysis of your finances';
+
+  @override
+  String get reportGeneratedSuccessfully => 'Report generated successfully!';
+
+  @override
+  String get yourDataIsReady => 'Your data is ready for AI analysis';
+
+  @override
+  String get summary => 'Summary';
+
+  @override
+  String get savingsGoals => 'Savings Goals';
+
+  @override
+  String get activeSavings => 'active';
+
+  @override
+  String get savedInGoals => 'Saved in Goals';
+
+  @override
+  String get totalTransactions => 'Total Transactions';
+
+  @override
+  String get savingsPercentage => 'Savings %';
+
+  @override
+  String get topCategories => 'Top Expense Categories';
+
+  @override
+  String get noExpensesRecorded => 'No expenses recorded';
+
+  @override
+  String get channels => 'Channels';
+
+  @override
+  String get noChannelsRecorded => 'No channels recorded';
+
+  @override
+  String get analyzeWithAI => 'Analyze with AI';
+
+  @override
+  String get viewReportsHistory => 'View Reports History';
+
+  @override
+  String get advancedOptions => 'Advanced options';
+
+  @override
+  String get copyTechnicalData => 'Copy technical data (JSON)';
+
+  @override
+  String get exportToExcel => 'Export to Excel';
+
+  @override
+  String get technicalDataCopied => 'Technical data copied to clipboard';
+
+  @override
+  String get reportGeneratedSuccess => 'Report generated successfully';
+
+  @override
+  String get errorGeneratingReport => 'Error generating report';
+
+  @override
+  String get analyzingWithAI => 'Analyzing with AI...';
+
+  @override
+  String get pleaseWait => 'Please wait...';
+
+  @override
+  String get errorAnalyzingAI => 'Error analyzing with AI';
+
+  @override
+  String get viewDetails => 'View details';
+
+  @override
+  String get financialAIAnalysis => 'Financial AI Analysis';
+
+  @override
+  String get executiveSummary => '📊 Executive Summary';
+
+  @override
+  String get yourStrengths => '💪 Your Strengths';
+
+  @override
+  String get detailedAnalysis => '💡 Detailed Analysis';
+
+  @override
+  String get projections => '🔮 Projections';
+
+  @override
+  String get recommendations => '🎯 Recommendations';
+
+  @override
+  String get improvementAreas => '📈 Improvement Areas';
+
+  @override
+  String get financialHealth => 'Financial Health';
+
+  @override
+  String get excellent => 'Excellent!';
+
+  @override
+  String get veryGood => 'Very Good';
+
+  @override
+  String get canImprove => 'Can Improve';
+
+  @override
+  String get needsAttention => 'Needs Attention';
+
+  @override
+  String get confidence => 'confidence';
+
+  @override
+  String get impact => 'Impact';
 }

@@ -268,4 +268,234 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get other => 'Otro';
+
+  @override
+  String get settings => 'Configuración';
+
+  @override
+  String get appearance => 'Apariencia';
+
+  @override
+  String get language => 'Idioma';
+
+  @override
+  String get lightMode => 'Modo Claro';
+
+  @override
+  String get darkMode => 'Modo Oscuro';
+
+  @override
+  String get systemMode => 'Predeterminado del Sistema';
+
+  @override
+  String get spanish => 'Español';
+
+  @override
+  String get english => 'Inglés';
+
+  @override
+  String get themeChanged => 'Tema cambiado';
+
+  @override
+  String get languageChanged => 'Idioma cambiado';
+
+  @override
+  String get generalSummary => 'Resumen General';
+
+  @override
+  String get generateAIReport => 'Generar Reporte IA';
+
+  @override
+  String get currentBalances => 'Saldos Actuales';
+
+  @override
+  String get monthlyMovement => 'Movimiento Mensual';
+
+  @override
+  String get channelDistribution => 'Distribución por Canal';
+
+  @override
+  String get incomes => 'Ingresos';
+
+  @override
+  String get expenses => 'Egresos';
+
+  @override
+  String get noBalancesAvailable => 'No hay saldos disponibles';
+
+  @override
+  String get totalAvailable => 'Total Disponible';
+
+  @override
+  String get monthlyBudgets => 'Presupuestos Mensuales';
+
+  @override
+  String get planned => 'Planeado';
+
+  @override
+  String get actual => 'Real';
+
+  @override
+  String get incomeBudget => 'Presupuesto de Ingresos';
+
+  @override
+  String get expenseBudget => 'Presupuesto de Egresos';
+
+  @override
+  String get incomeComparison => 'Comparación de Ingresos por Categoría';
+
+  @override
+  String get expenseComparison => 'Comparación de Egresos por Categoría';
+
+  @override
+  String get budgetsSavedSuccessfully => 'Presupuestos guardados exitosamente';
+
+  @override
+  String get errorSaving => 'Error al guardar';
+
+  @override
+  String get monthlyAIReport => 'Reporte Mensual IA';
+
+  @override
+  String get generateMonthlyAIReport => 'Generar Reporte Mensual con IA';
+
+  @override
+  String get generateCompleteReport =>
+      'Genera un reporte completo con análisis de IA';
+
+  @override
+  String get generating => 'Generando reporte...';
+
+  @override
+  String get whatIncludes => '¿Qué incluye?';
+
+  @override
+  String get summaryIncomeExpenses => '📊 Resumen de ingresos y gastos';
+
+  @override
+  String get savingsGoalsTracking => '🎯 Seguimiento de metas de ahorro';
+
+  @override
+  String get categoryBreakdown => '💰 Desglose por categorías';
+
+  @override
+  String get channelAnalysis =>
+      '📱 Análisis por canales (Nequi, NuBank, Efectivo)';
+
+  @override
+  String get aiIntelligentAnalysis => '🤖 Análisis inteligente de tus finanzas';
+
+  @override
+  String get reportGeneratedSuccessfully => '¡Reporte generado con éxito!';
+
+  @override
+  String get yourDataIsReady => 'Tus datos están listos para el análisis de IA';
+
+  @override
+  String get summary => 'Resumen';
+
+  @override
+  String get savingsGoals => 'Metas de Ahorro';
+
+  @override
+  String get activeSavings => 'activas';
+
+  @override
+  String get savedInGoals => 'Ahorrado en Metas';
+
+  @override
+  String get totalTransactions => 'Total Transacciones';
+
+  @override
+  String get savingsPercentage => '% Ahorro';
+
+  @override
+  String get topCategories => 'Top Categorías de Gastos';
+
+  @override
+  String get noExpensesRecorded => 'No hay gastos registrados';
+
+  @override
+  String get channels => 'Canales';
+
+  @override
+  String get noChannelsRecorded => 'No hay canales registrados';
+
+  @override
+  String get analyzeWithAI => 'Analizar con IA';
+
+  @override
+  String get viewReportsHistory => 'Ver Historial de Reportes';
+
+  @override
+  String get advancedOptions => 'Opciones avanzadas';
+
+  @override
+  String get copyTechnicalData => 'Copiar datos técnicos (JSON)';
+
+  @override
+  String get exportToExcel => 'Exportar a Excel';
+
+  @override
+  String get technicalDataCopied => 'Datos técnicos copiados al portapapeles';
+
+  @override
+  String get reportGeneratedSuccess => 'Reporte generado exitosamente';
+
+  @override
+  String get errorGeneratingReport => 'Error al generar reporte';
+
+  @override
+  String get analyzingWithAI => 'Analizando con IA...';
+
+  @override
+  String get pleaseWait => 'Por favor espera...';
+
+  @override
+  String get errorAnalyzingAI => 'Error al analizar con IA';
+
+  @override
+  String get viewDetails => 'Ver detalles';
+
+  @override
+  String get financialAIAnalysis => 'Análisis Financiero IA';
+
+  @override
+  String get executiveSummary => '📊 Resumen Ejecutivo';
+
+  @override
+  String get yourStrengths => '💪 Tus Fortalezas';
+
+  @override
+  String get detailedAnalysis => '💡 Análisis Detallado';
+
+  @override
+  String get projections => '🔮 Proyecciones';
+
+  @override
+  String get recommendations => '🎯 Recomendaciones';
+
+  @override
+  String get improvementAreas => '📈 Áreas de Mejora';
+
+  @override
+  String get financialHealth => 'Salud Financiera';
+
+  @override
+  String get excellent => '¡Excelente!';
+
+  @override
+  String get veryGood => 'Muy Bien';
+
+  @override
+  String get canImprove => 'Puede Mejorar';
+
+  @override
+  String get needsAttention => 'Necesita Atención';
+
+  @override
+  String get confidence => 'confianza';
+
+  @override
+  String get impact => 'Impacto';
 }
