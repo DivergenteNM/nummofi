@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
 import '../core/services/ai_analysis_service.dart';
+import '../l10n/app_localizations.dart';
 
 /// Pantalla para mostrar los insights de IA
 class AIInsightsScreen extends StatelessWidget {
@@ -14,7 +16,7 @@ class AIInsightsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Análisis Financiero IA'),
+        title: Text(AppLocalizations.of(context)!.financialAIAnalysis),
         backgroundColor: Colors.deepPurple,
       ),
       body: SingleChildScrollView(
@@ -23,18 +25,18 @@ class AIInsightsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header con puntuación
-            _buildHealthScoreCard(),
+            _buildHealthScoreCard(context),
             const SizedBox(height: 24),
 
             // Resumen Ejecutivo
-            _buildSectionTitle('📊 Resumen Ejecutivo'),
+            _buildSectionTitle(AppLocalizations.of(context)!.executiveSummary),
             const SizedBox(height: 12),
             _buildResumenCard(),
             const SizedBox(height: 24),
 
             // Fortalezas
             if (insights.fortalezas.isNotEmpty) ...[
-              _buildSectionTitle('💪 Tus Fortalezas'),
+              _buildSectionTitle(AppLocalizations.of(context)!.yourStrengths),
               const SizedBox(height: 12),
               _buildFortalezasList(),
               const SizedBox(height: 24),
@@ -42,23 +44,23 @@ class AIInsightsScreen extends StatelessWidget {
 
             // Insights
             if (insights.insights.isNotEmpty) ...[
-              _buildSectionTitle('💡 Análisis Detallado'),
+              _buildSectionTitle(AppLocalizations.of(context)!.detailedAnalysis),
               const SizedBox(height: 12),
-              _buildInsightsList(),
+              _buildInsightsList(context),
               const SizedBox(height: 24),
             ],
 
             // Proyecciones
             if (insights.proyecciones.isNotEmpty) ...[
-              _buildSectionTitle('🔮 Proyecciones'),
+              _buildSectionTitle(AppLocalizations.of(context)!.projections),
               const SizedBox(height: 12),
-              _buildProyeccionesList(),
+              _buildProyeccionesList(context),
               const SizedBox(height: 24),
             ],
 
             // Recomendaciones
             if (insights.recomendaciones.isNotEmpty) ...[
-              _buildSectionTitle('🎯 Recomendaciones'),
+              _buildSectionTitle(AppLocalizations.of(context)!.recommendations),
               const SizedBox(height: 12),
               _buildRecomendacionesList(),
               const SizedBox(height: 24),
@@ -66,7 +68,7 @@ class AIInsightsScreen extends StatelessWidget {
 
             // Áreas de Mejora
             if (insights.areasMejora.isNotEmpty) ...[
-              _buildSectionTitle('📈 Áreas de Mejora'),
+              _buildSectionTitle(AppLocalizations.of(context)!.improvementAreas),
               const SizedBox(height: 12),
               _buildAreasMejoraList(),
               const SizedBox(height: 24),
@@ -87,27 +89,28 @@ class AIInsightsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHealthScoreCard() {
+  Widget _buildHealthScoreCard(BuildContext context) {
     final score = insights.puntuacionSaludFinanciera;
     Color color;
     String message;
     IconData icon;
+    final l10n = AppLocalizations.of(context)!;
 
     if (score >= 80) {
       color = Colors.green;
-      message = '¡Excelente!';
+      message = l10n.excellent;
       icon = Icons.stars;
     } else if (score >= 60) {
       color = Colors.blue;
-      message = 'Muy Bien';
+      message = l10n.veryGood;
       icon = Icons.thumb_up;
     } else if (score >= 40) {
       color = Colors.orange;
-      message = 'Puede Mejorar';
+      message = l10n.canImprove;
       icon = Icons.warning_amber;
     } else {
       color = Colors.red;
-      message = 'Necesita Atención';
+      message = l10n.needsAttention;
       icon = Icons.error_outline;
     }
 
@@ -116,14 +119,14 @@ class AIInsightsScreen extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [color.withOpacity(0.8), color],
+          colors: [color.withValues(alpha: 0.8), color],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.3),
+            color: color.withValues(alpha: 0.3),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -133,9 +136,9 @@ class AIInsightsScreen extends StatelessWidget {
         children: [
           Icon(icon, size: 64, color: Colors.white),
           const SizedBox(height: 12),
-          const Text(
-            'Salud Financiera',
-            style: TextStyle(
+          Text(
+            l10n.financialHealth,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -206,18 +209,19 @@ class AIInsightsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInsightsList() {
+  Widget _buildInsightsList(BuildContext context) {
     return Column(
       children: insights.insights.map((insight) {
-        return _buildInsightCard(insight);
+        return _buildInsightCard(context, insight);
       }).toList(),
     );
   }
 
-  Widget _buildInsightCard(AIInsight insight) {
+  Widget _buildInsightCard(BuildContext context, AIInsight insight) {
     Color color;
     IconData icon;
     Color bgColor;
+    final l10n = AppLocalizations.of(context)!;
 
     switch (insight.tipo.toLowerCase()) {
       case 'alerta':
@@ -279,9 +283,9 @@ class AIInsightsScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: color.withOpacity(0.3)),
+                  border: Border.all(color: color.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -308,7 +312,7 @@ class AIInsightsScreen extends StatelessWidget {
                   Icon(Icons.trending_up, size: 16, color: Colors.grey[600]),
                   const SizedBox(width: 4),
                   Text(
-                    'Impacto: ${insight.impactoEstimado}',
+                    '${l10n.impact}: ${insight.impactoEstimado}',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[700],
@@ -324,21 +328,22 @@ class AIInsightsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProyeccionesList() {
+  Widget _buildProyeccionesList(BuildContext context) {
     return Column(
       children: insights.proyecciones.map((proyeccion) {
-        return _buildProyeccionCard(proyeccion);
+        return _buildProyeccionCard(context, proyeccion);
       }).toList(),
     );
   }
 
-  Widget _buildProyeccionCard(AIProjection proyeccion) {
+  Widget _buildProyeccionCard(BuildContext context, AIProjection proyeccion) {
     final confianzaPercent = (proyeccion.confianza * 100).toInt();
     final confianzaColor = proyeccion.confianza >= 0.8
         ? Colors.green
         : proyeccion.confianza >= 0.6
             ? Colors.blue
             : Colors.orange;
+    final l10n = AppLocalizations.of(context)!;
 
     return Card(
       elevation: 2,
@@ -393,9 +398,9 @@ class AIInsightsScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: confianzaColor.withOpacity(0.1),
+                    color: confianzaColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: confianzaColor.withOpacity(0.3)),
+                    border: Border.all(color: confianzaColor.withValues(alpha: 0.3)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -403,7 +408,7 @@ class AIInsightsScreen extends StatelessWidget {
                       Icon(Icons.show_chart, size: 16, color: confianzaColor),
                       const SizedBox(width: 4),
                       Text(
-                        '$confianzaPercent% confianza',
+                        '$confianzaPercent% ${l10n.confidence}',
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
@@ -509,11 +514,8 @@ class AIInsightsScreen extends StatelessWidget {
   String _formatFecha(String fecha) {
     try {
       final date = DateTime.parse(fecha);
-      final meses = [
-        'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
-      ];
-      return '${date.day} ${meses[date.month - 1]} ${date.year}';
+      final locale = WidgetsBinding.instance.platformDispatcher.locale.toString();
+      return intl.DateFormat('d MMM y', locale).format(date);
     } catch (e) {
       return fecha;
     }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart' as intl;
 import '../core/providers/finance_provider.dart';
 import '../core/utils/currency_formatter.dart';
 import '../core/theme/app_theme.dart';
 import '../data/models/transaction_model.dart';
+import '../l10n/app_localizations.dart';
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -27,7 +29,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
         children: [
           // Título
           Text(
-            'Reportes y Gráficas',
+            AppLocalizations.of(context)!.reports,
             style: Theme.of(context).textTheme.displayMedium,
             textAlign: TextAlign.center,
           ),
@@ -38,29 +40,35 @@ class _ReportsScreenState extends State<ReportsScreen> {
           const SizedBox(height: 24),
 
           // Estadísticas generales
-          _buildGeneralStats(provider),
+          _buildGeneralStats(context, provider),
           const SizedBox(height: 24),
 
           // Gráfica de distribución de egresos (Dona)
-          _buildExpenseDistributionChart(provider),
+          _buildExpenseDistributionChart(context, provider),
           const SizedBox(height: 24),
 
           // Gráfica de evolución temporal (Líneas)
-          _buildTemporalEvolutionChart(provider),
+          _buildTemporalEvolutionChart(context, provider),
           const SizedBox(height: 24),
 
           // Top categorías
-          _buildTopCategories(provider),
+          _buildTopCategories(context, provider),
           const SizedBox(height: 24),
 
           // Comparativa de canales
-          _buildChannelComparison(provider),
+          _buildChannelComparison(context, provider),
         ],
       ),
     );
   }
 
   Widget _buildPeriodSelector() {
+    final locale = Localizations.localeOf(context).toString();
+    final now = DateTime.now();
+    final monthLabel = intl.DateFormat('MMM', locale).format(now);
+    final threeMonthsStart = DateTime(now.year, now.month - 2, 1);
+    final threeMonthsLabel = '${intl.DateFormat('MMM', locale).format(threeMonthsStart)}–${intl.DateFormat('MMM', locale).format(now)}';
+    final yearLabel = intl.DateFormat('y', locale).format(now);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -68,7 +76,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Período de Análisis',
+              AppLocalizations.of(context)!.filterByDate,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -80,17 +88,17 @@ class _ReportsScreenState extends State<ReportsScreen> {
               segments: [
                 ButtonSegment(
                   value: 'month',
-                  label: Text('Este Mes', style: TextStyle(fontSize: 12)),
+                  label: Text(monthLabel, style: const TextStyle(fontSize: 12)),
                   icon: Icon(Icons.calendar_today, size: 16),
                 ),
                 ButtonSegment(
                   value: '3months',
-                  label: Text('Trimestre', style: TextStyle(fontSize: 12)),
+                  label: Text(threeMonthsLabel, style: const TextStyle(fontSize: 12)),
                   icon: Icon(Icons.calendar_month, size: 16),
                 ),
                 ButtonSegment(
                   value: 'year',
-                  label: Text('Este Año', style: TextStyle(fontSize: 12)),
+                  label: Text(yearLabel, style: const TextStyle(fontSize: 12)),
                   icon: Icon(Icons.calendar_view_month, size: 16),
                 ),
               ],
@@ -107,7 +115,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildGeneralStats(FinanceProvider provider) {
+  Widget _buildGeneralStats(BuildContext context, FinanceProvider provider) {
     final transactions = _getFilteredTransactions(provider);
     final totalIncome = transactions
         .where((t) => t.type == 'Ingreso')
@@ -117,6 +125,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
         .fold(0.0, (sum, t) => sum + t.amount);
     final balance = totalIncome - totalExpenses;
     final savingsRate = totalIncome > 0 ? (balance / totalIncome * 100) : 0.0;
+    final l10n = AppLocalizations.of(context)!;
 
     return Card(
       child: Padding(
@@ -125,7 +134,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Estadísticas Generales',
+              l10n.generalSummary,
               style: Theme.of(context).textTheme.displaySmall,
               textAlign: TextAlign.center,
             ),
@@ -139,25 +148,25 @@ class _ReportsScreenState extends State<ReportsScreen> {
               childAspectRatio: 1.3,
               children: [
                 _buildStatCard(
-                  'Ingresos Totales',
+                  l10n.totalIncome,
                   CurrencyFormatter.formatCurrency(totalIncome),
                   Icons.arrow_downward,
                   AppColors.income,
                 ),
                 _buildStatCard(
-                  'Egresos Totales',
+                  l10n.totalExpenses,
                   CurrencyFormatter.formatCurrency(totalExpenses),
                   Icons.arrow_upward,
                   AppColors.expense,
                 ),
                 _buildStatCard(
-                  'Balance',
+                  l10n.balance,
                   CurrencyFormatter.formatCurrency(balance),
                   Icons.account_balance_wallet,
                   balance >= 0 ? AppColors.success : AppColors.error,
                 ),
                 _buildStatCard(
-                  'Tasa de Ahorro',
+                  l10n.savingsPercentage,
                   '${savingsRate.toStringAsFixed(1)}%',
                   Icons.savings,
                   savingsRate >= 20 ? AppColors.success : AppColors.warning,
@@ -174,9 +183,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -210,9 +219,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildExpenseDistributionChart(FinanceProvider provider) {
+  Widget _buildExpenseDistributionChart(BuildContext context, FinanceProvider provider) {
     final transactions = _getFilteredTransactions(provider);
     final expensesByCategory = <String, double>{};
+    final l10n = AppLocalizations.of(context)!;
 
     for (var transaction in transactions) {
       if (transaction.type == 'Egreso' && transaction.category != null) {
@@ -229,7 +239,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Distribución de Egresos',
+                l10n.expensesByCategory,
                 style: Theme.of(context).textTheme.displaySmall,
                 textAlign: TextAlign.center,
               ),
@@ -237,7 +247,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               Icon(Icons.pie_chart_outline, size: 64, color: Colors.grey[400]),
               const SizedBox(height: 16),
               Text(
-                'No hay egresos para mostrar',
+                l10n.noExpensesRecorded,
                 style: TextStyle(color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
@@ -257,7 +267,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Distribución de Egresos',
+              l10n.expensesByCategory,
               style: Theme.of(context).textTheme.displaySmall,
               textAlign: TextAlign.center,
             ),
@@ -358,7 +368,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   ],
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -403,8 +413,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
     return colors[index % colors.length];
   }
 
-  Widget _buildTemporalEvolutionChart(FinanceProvider provider) {
-    final monthlyData = _getMonthlyData(provider);
+  Widget _buildTemporalEvolutionChart(BuildContext context, FinanceProvider provider) {
+    final monthlyData = _getMonthlyData(context, provider);
+    final l10n = AppLocalizations.of(context)!;
 
     if (monthlyData.isEmpty) {
       return Card(
@@ -415,7 +426,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               Icon(Icons.show_chart, size: 64, color: Colors.grey[400]),
               const SizedBox(height: 16),
               Text(
-                'No hay datos suficientes para mostrar evolución',
+                l10n.noTransactions,
                 style: TextStyle(color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
@@ -432,7 +443,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Evolución de Ingresos y Egresos',
+              l10n.incomeVsExpenses,
               style: Theme.of(context).textTheme.displaySmall,
               textAlign: TextAlign.center,
             ),
@@ -501,7 +512,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       dotData: const FlDotData(show: true),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: AppColors.income.withOpacity(0.1),
+                        color: AppColors.income.withValues(alpha: 0.1),
                       ),
                     ),
                     // Línea de egresos
@@ -519,7 +530,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       dotData: const FlDotData(show: true),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: AppColors.expense.withOpacity(0.1),
+                        color: AppColors.expense.withValues(alpha: 0.1),
                       ),
                     ),
                   ],
@@ -531,9 +542,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildLegendItem('Ingresos', AppColors.income),
+                _buildLegendItem(l10n.incomes, AppColors.income),
                 const SizedBox(width: 24),
-                _buildLegendItem('Egresos', AppColors.expense),
+                _buildLegendItem(l10n.expenses, AppColors.expense),
               ],
             ),
           ],
@@ -562,8 +573,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildTopCategories(FinanceProvider provider) {
+  Widget _buildTopCategories(BuildContext context, FinanceProvider provider) {
     final transactions = _getFilteredTransactions(provider);
+    final l10n = AppLocalizations.of(context)!;
     
     // Top egresos
     final expensesByCategory = <String, double>{};
@@ -594,23 +606,25 @@ class _ReportsScreenState extends State<ReportsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Top Categorías',
+              l10n.topCategories,
               style: Theme.of(context).textTheme.displaySmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             _buildTopList(
-              'Mayores Ingresos',
+              l10n.incomes,
               topIncomes.take(5).toList(),
               AppColors.income,
               Icons.trending_down,
+              context,
             ),
             const SizedBox(height: 24),
             _buildTopList(
-              'Mayores Egresos',
+              l10n.expenses,
               topExpenses.take(5).toList(),
               AppColors.expense,
               Icons.trending_up,
+              context,
             ),
           ],
         ),
@@ -623,7 +637,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
     List<MapEntry<String, double>> items,
     Color color,
     IconData icon,
+    BuildContext context,
   ) {
+    final l10n = AppLocalizations.of(context)!;
     if (items.isEmpty) {
       return Column(
         children: [
@@ -636,7 +652,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Sin datos',
+            l10n.noTransactions,
             style: TextStyle(color: Colors.grey[600], fontSize: 12),
           ),
         ],
@@ -678,7 +694,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.2),
+                        color: color.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Center(
@@ -727,14 +743,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
               ],
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }
 
-  Widget _buildChannelComparison(FinanceProvider provider) {
+  Widget _buildChannelComparison(BuildContext context, FinanceProvider provider) {
     final transactions = _getFilteredTransactions(provider);
     final channelData = <String, Map<String, double>>{};
+    final l10n = AppLocalizations.of(context)!;
 
     // Calcular ingresos y egresos por canal
     for (var transaction in transactions) {
@@ -766,7 +783,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               Icon(Icons.account_balance, size: 64, color: Colors.grey[400]),
               const SizedBox(height: 16),
               Text(
-                'No hay movimientos por canal',
+                l10n.noChannelsRecorded,
                 style: TextStyle(color: Colors.grey[600]),
               ),
             ],
@@ -782,7 +799,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Comparativa por Canal',
+              l10n.channelDistribution,
               style: Theme.of(context).textTheme.displaySmall,
               textAlign: TextAlign.center,
             ),
@@ -829,7 +846,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       children: [
                         Expanded(
                           child: _buildChannelBar(
-                            'Ingresos',
+                            l10n.incomes,
                             income,
                             AppColors.income,
                           ),
@@ -837,7 +854,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: _buildChannelBar(
-                            'Egresos',
+                            l10n.expenses,
                             expense,
                             AppColors.expense,
                           ),
@@ -847,7 +864,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   ],
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -929,7 +946,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     }
   }
 
-  List<Map<String, dynamic>> _getMonthlyData(FinanceProvider provider) {
+  List<Map<String, dynamic>> _getMonthlyData(BuildContext context, FinanceProvider provider) {
     final transactions = provider.transactions;
     final monthlyMap = <String, Map<String, double>>{};
 
@@ -953,17 +970,16 @@ class _ReportsScreenState extends State<ReportsScreen> {
       final parts = key.split('-');
       final month = int.parse(parts[1]);
       return {
-        'label': _getMonthShortName(month),
+        'label': _getMonthShortName(context, month),
         'income': monthlyMap[key]!['income']!,
         'expense': monthlyMap[key]!['expense']!,
       };
     }).toList();
   }
 
-  String _getMonthShortName(int month) {
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    return months[month - 1];
+  String _getMonthShortName(BuildContext context, int month) {
+    final locale = Localizations.localeOf(context).toString();
+    return intl.DateFormat('MMM', locale).format(DateTime(2000, month, 1));
   }
 
   double _getMaxY(List<Map<String, dynamic>> data) {

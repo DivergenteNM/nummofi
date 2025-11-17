@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../core/providers/finance_provider.dart';
 import '../data/models/transaction_model.dart';
@@ -7,6 +6,8 @@ import '../core/constants/app_constants.dart';
 import '../core/utils/currency_formatter.dart';
 import '../core/utils/number_formatter.dart';
 import '../core/theme/app_theme.dart';
+import 'package:intl/intl.dart' as intl;
+import '../l10n/app_localizations.dart';
 
 class TransactionsScreen extends StatelessWidget {
   const TransactionsScreen({super.key});
@@ -22,7 +23,7 @@ class TransactionsScreen extends StatelessWidget {
         children: [
           // Título
           Text(
-            'Registro de Transacciones',
+            AppLocalizations.of(context)!.transactions,
             style: Theme.of(context).textTheme.displayMedium,
             textAlign: TextAlign.center,
           ),
@@ -35,7 +36,7 @@ class TransactionsScreen extends StatelessWidget {
                 _showTransactionDialog(context, null);
               },
               icon: const Icon(Icons.add),
-              label: const Text('Agregar Transacción'),
+              label: Text(AppLocalizations.of(context)!.addTransaction),
             ),
           ),
           const SizedBox(height: 16),
@@ -48,16 +49,16 @@ class TransactionsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Historial del Mes',
+                    AppLocalizations.of(context)!.recentTransactions,
                     style: Theme.of(context).textTheme.displaySmall,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
                   provider.currentMonthTransactions.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Padding(
-                            padding: EdgeInsets.all(32),
-                            child: Text('No hay transacciones este mes'),
+                            padding: const EdgeInsets.all(32),
+                            child: Text(AppLocalizations.of(context)!.noTransactions),
                           ),
                         )
                       : ListView.separated(
@@ -104,10 +105,10 @@ class TransactionsScreen extends StatelessWidget {
             CircleAvatar(
               radius: 24,
               backgroundColor: transaction.type == 'Ingreso'
-                  ? AppColors.income.withOpacity(0.15)
+                  ? AppColors.income.withValues(alpha: 0.15)
                   : transaction.type == 'Egreso'
-                  ? AppColors.expense.withOpacity(0.15)
-                  : AppColors.transfer.withOpacity(0.15),
+                  ? AppColors.expense.withValues(alpha: 0.15)
+                  : AppColors.transfer.withValues(alpha: 0.15),
               child: Icon(
                 transaction.type == 'Ingreso'
                     ? Icons.arrow_downward
@@ -139,10 +140,10 @@ class TransactionsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    transaction.category ?? 
-                    (transaction.channelFrom != null 
-                        ? "${transaction.channelFrom} → ${transaction.channelTo}" 
-                        : "Sin categoría"),
+                    transaction.category ??
+                        (transaction.channelFrom != null
+                            ? "${transaction.channelFrom} → ${transaction.channelTo}"
+                            : AppLocalizations.of(context)!.category),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[600],
@@ -170,7 +171,8 @@ class TransactionsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${transaction.date.day}/${transaction.date.month}/${transaction.date.year}',
+                  intl.DateFormat.yMd(Localizations.localeOf(context).toString())
+                      .format(transaction.date),
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.grey[500],
@@ -207,8 +209,8 @@ class TransactionsScreen extends StatelessWidget {
                 CircleAvatar(
                   radius: 28,
                   backgroundColor: transaction.type == 'Ingreso'
-                      ? AppColors.income.withOpacity(0.15)
-                      : AppColors.expense.withOpacity(0.15),
+                      ? AppColors.income.withValues(alpha: 0.15)
+                      : AppColors.expense.withValues(alpha: 0.15),
                   child: Icon(
                     transaction.type == 'Ingreso'
                         ? Icons.arrow_downward
@@ -249,12 +251,15 @@ class TransactionsScreen extends StatelessWidget {
             const Divider(),
             const SizedBox(height: 16),
             // Detalles
-            _buildDetailRow('Monto', CurrencyFormatter.formatCurrency(transaction.amount)),
-            _buildDetailRow('Fecha', '${transaction.date.day}/${transaction.date.month}/${transaction.date.year}'),
+            _buildDetailRow(AppLocalizations.of(context)!.amount, CurrencyFormatter.formatCurrency(transaction.amount)),
+            _buildDetailRow(
+              AppLocalizations.of(context)!.date,
+              intl.DateFormat.yMd(Localizations.localeOf(context).toString()).format(transaction.date),
+            ),
             if (transaction.category != null)
-              _buildDetailRow('Categoría', transaction.category!),
+              _buildDetailRow(AppLocalizations.of(context)!.category, transaction.category!),
             if (transaction.channel != null)
-              _buildDetailRow('Canal', transaction.channel!),
+              _buildDetailRow(AppLocalizations.of(context)!.channels, transaction.channel!),
             if (transaction.channelFrom != null)
               _buildDetailRow('Desde', transaction.channelFrom!),
             if (transaction.channelTo != null)
@@ -275,7 +280,7 @@ class TransactionsScreen extends StatelessWidget {
                       });
                     },
                     icon: const Icon(Icons.edit),
-                    label: const Text('Editar'),
+                    label: Text(AppLocalizations.of(context)!.edit),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
@@ -294,7 +299,7 @@ class TransactionsScreen extends StatelessWidget {
                       });
                     },
                     icon: const Icon(Icons.delete),
-                    label: const Text('Eliminar'),
+                    label: Text(AppLocalizations.of(context)!.delete),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.error,
                       padding: const EdgeInsets.symmetric(vertical: 14),
@@ -358,12 +363,12 @@ class TransactionsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Eliminar Transacción'),
-        content: const Text('¿Estás seguro de eliminar esta transacción?'),
+        title: Text(AppLocalizations.of(context)!.deleteTransaction),
+        content: Text(AppLocalizations.of(context)!.confirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -372,15 +377,15 @@ class TransactionsScreen extends StatelessWidget {
                 if (context.mounted) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Transacción eliminada exitosamente'),
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.success),
                     ),
                   );
                 }
               } catch (e) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: $e')),
+                    SnackBar(content: Text('${AppLocalizations.of(context)!.error}: $e')),
                   );
                 }
               }
@@ -388,7 +393,7 @@ class TransactionsScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Eliminar'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -453,8 +458,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
     return AlertDialog(
       title: Text(
         widget.transaction == null
-            ? 'Agregar Transacción'
-            : 'Editar Transacción',
+        ? AppLocalizations.of(context)!.addTransaction
+        : AppLocalizations.of(context)!.editTransaction,
       ),
       contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
       content: SizedBox(
@@ -479,14 +484,15 @@ class _TransactionDialogState extends State<TransactionDialog> {
                   }
                 },
                 child: InputDecorator(
-                  decoration: const InputDecoration(
-                    labelText: 'Fecha',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.date,
                     border: OutlineInputBorder(),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     suffixIcon: Icon(Icons.calendar_today),
                   ),
                   child: Text(
-                    '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                    intl.DateFormat.yMd(Localizations.localeOf(context).toString())
+                        .format(_selectedDate),
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
@@ -495,7 +501,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
 
               // Tipo
               DropdownButtonFormField<String>(
-                value: _selectedType,
+                initialValue: _selectedType,
                 decoration: const InputDecoration(
                   labelText: 'Tipo',
                   border: OutlineInputBorder(),
@@ -524,8 +530,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
               TextField(
                 controller: _amountController,
                 inputFormatters: [ThousandsSeparatorFormatter()],
-                decoration: const InputDecoration(
-                  labelText: 'Monto',
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.amount,
                   prefixText: '\$ ',
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -538,7 +544,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
               // Campos según el tipo
               if (_selectedType == 'Transferencia') ...[
                 DropdownButtonFormField<String>(
-                  value: _selectedChannelFrom,
+                  initialValue: _selectedChannelFrom,
                   decoration: const InputDecoration(
                     labelText: 'Desde el Canal',
                     border: OutlineInputBorder(),
@@ -558,7 +564,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: _selectedChannelTo,
+                  initialValue: _selectedChannelTo,
                   decoration: const InputDecoration(
                     labelText: 'Hacia el Canal',
                     border: OutlineInputBorder(),
@@ -579,9 +585,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                 const SizedBox(height: 16),
               ] else ...[
                 DropdownButtonFormField<String>(
-                  value: _selectedChannel,
-                  decoration: const InputDecoration(
-                    labelText: 'Canal',
+                  initialValue: _selectedChannel,
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.channels,
                     border: OutlineInputBorder(),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   ),
@@ -599,9 +605,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: _selectedCategory,
-                  decoration: const InputDecoration(
-                    labelText: 'Categoría',
+                  initialValue: _selectedCategory,
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.category,
                     border: OutlineInputBorder(),
                     contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   ),
@@ -630,8 +636,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
               // Descripción
               TextField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Descripción',
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.description,
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
@@ -645,7 +651,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancelar'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         ElevatedButton(
           onPressed: () async {
@@ -676,9 +682,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      widget.transaction == null
-                          ? 'Transacción agregada exitosamente'
-                          : 'Transacción actualizada exitosamente',
+                      AppLocalizations.of(context)!.success,
                     ),
                   ),
                 );
@@ -686,12 +690,12 @@ class _TransactionDialogState extends State<TransactionDialog> {
             } catch (e) {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error: $e')),
+                  SnackBar(content: Text('${AppLocalizations.of(context)!.error}: $e')),
                 );
               }
             }
           },
-          child: const Text('Guardar'),
+          child: Text(AppLocalizations.of(context)!.save),
         ),
       ],
     );

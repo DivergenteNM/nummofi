@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../l10n/app_localizations.dart';
 import '../core/providers/finance_provider.dart';
 import '../core/theme/app_theme.dart';
 import '../core/utils/currency_formatter.dart';
@@ -12,6 +13,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FinanceProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -20,7 +22,7 @@ class DashboardScreen extends StatelessWidget {
         children: [
           // Título
           Text(
-            'Resumen General',
+            l10n.generalSummary,
             style: Theme.of(context).textTheme.displayMedium,
             textAlign: TextAlign.center,
           ),
@@ -45,7 +47,7 @@ class DashboardScreen extends StatelessWidget {
                 );
               },
               icon: const Icon(Icons.analytics_outlined),
-              label: const Text('Generar Reporte IA'),
+              label: Text(l10n.generateAIReport),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: Colors.deepPurple,
@@ -58,7 +60,7 @@ class DashboardScreen extends StatelessWidget {
 
           // Saldos Actuales
           Text(
-            'Saldos Actuales',
+            l10n.currentBalances,
             style: Theme.of(context).textTheme.displaySmall,
             textAlign: TextAlign.center,
           ),
@@ -68,22 +70,22 @@ class DashboardScreen extends StatelessWidget {
 
           // Movimiento Mensual
           Text(
-            'Movimiento Mensual',
+            l10n.monthlyMovement,
             style: Theme.of(context).textTheme.displaySmall,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
-          _buildMonthlyMovementChart(provider),
+          _buildMonthlyMovementChart(context, provider),
           const SizedBox(height: 24),
 
           // Flujo por Canal
           Text(
-            'Distribución por Canal',
+            l10n.channelDistribution,
             style: Theme.of(context).textTheme.displaySmall,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
-          _buildChannelFlowChart(provider),
+          _buildChannelFlowChart(context, provider),
         ],
       ),
     );
@@ -138,7 +140,9 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMonthlyMovementChart(FinanceProvider provider) {
+  Widget _buildMonthlyMovementChart(BuildContext context, FinanceProvider provider) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -259,9 +263,9 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Ingresos',
-                      style: TextStyle(
+                    Text(
+                      l10n.incomes,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
                       ),
@@ -288,9 +292,9 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Egresos',
-                      style: TextStyle(
+                    Text(
+                      l10n.expenses,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
                       ),
@@ -314,7 +318,9 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildChannelFlowChart(FinanceProvider provider) {
+  Widget _buildChannelFlowChart(BuildContext context, FinanceProvider provider) {
+    final l10n = AppLocalizations.of(context)!;
+    
     // Filtrar canales con saldo positivo para la gráfica
     final channelsWithBalance = provider.channelBalances
         .where((c) => c.balance > 0)
@@ -329,7 +335,7 @@ class DashboardScreen extends StatelessWidget {
               Icon(Icons.account_balance_wallet, size: 64, color: Colors.grey[400]),
               const SizedBox(height: 16),
               Text(
-                'No hay saldos disponibles',
+                l10n.noBalancesAvailable,
                 style: TextStyle(color: Colors.grey[600]),
               ),
             ],
@@ -454,9 +460,9 @@ class DashboardScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Total Disponible',
-                    style: TextStyle(
+                  Text(
+                    l10n.totalAvailable,
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),

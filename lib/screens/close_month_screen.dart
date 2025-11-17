@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart' as intl;
 import '../core/providers/finance_provider.dart';
 import '../core/services/ai_report_service.dart';
 import '../core/services/ai_analysis_service.dart';
@@ -9,6 +10,7 @@ import '../core/services/auth_service.dart';
 import '../core/utils/currency_formatter.dart';
 import '../data/models/monthly_ai_report_model.dart';
 import 'ai_insights_screen.dart';
+import '../l10n/app_localizations.dart';
 
 /// Pantalla para cerrar el mes y generar el reporte para IA
 class CloseMonthScreen extends StatefulWidget {
@@ -31,7 +33,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reporte Mensual IA'),
+        title: Text(AppLocalizations.of(context)!.monthlyAIReport),
         backgroundColor: Colors.deepPurple,
       ),
       body: _generatedReport == null
@@ -54,14 +56,14 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Generar Reporte Mensual con IA',
+              AppLocalizations.of(context)!.generateMonthlyAIReport,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),
             const SizedBox(height: 16),
             Text(
-              'Genera un reporte completo con análisis de IA',
+              AppLocalizations.of(context)!.generateCompleteReport,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -70,7 +72,8 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              _getMonthName(month) + ' ' + year.toString(),
+              intl.DateFormat('MMMM y', Localizations.localeOf(context).toString())
+                  .format(DateTime(year, month, 1)),
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -83,7 +86,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
               ElevatedButton.icon(
                 onPressed: () => _generateReport(context, month, year),
                 icon: const Icon(Icons.play_arrow),
-                label: const Text('Generar Reporte de IA'),
+                label: Text(AppLocalizations.of(context)!.generateMonthlyAIReport),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
@@ -93,11 +96,11 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
                 ),
               )
             else
-              const Column(
+              Column(
                 children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Generando reporte...'),
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text(AppLocalizations.of(context)!.generating),
                 ],
               ),
             
@@ -116,9 +119,9 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
                     children: [
                       Icon(Icons.info_outline, color: Colors.blue[700]),
                       const SizedBox(width: 8),
-                      const Text(
-                        '¿Qué incluye el reporte?',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.whatIncludes,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
@@ -126,12 +129,11 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _buildInfoItem('📊 Ingresos y egresos detallados por categoría'),
-                  _buildInfoItem('💰 Análisis de metas de ahorro'),
-                  _buildInfoItem('📈 Comparación con el mes anterior'),
-                  _buildInfoItem('🎯 Cumplimiento de presupuesto'),
-                  _buildInfoItem('🏦 Balance de canales (bancos/efectivo)'),
-                  _buildInfoItem('🤖 Análisis inteligente de tus finanzas'),
+                  _buildInfoItem(AppLocalizations.of(context)!.summaryIncomeExpenses),
+                  _buildInfoItem(AppLocalizations.of(context)!.categoryBreakdown),
+                  _buildInfoItem(AppLocalizations.of(context)!.savingsGoalsTracking),
+                  _buildInfoItem(AppLocalizations.of(context)!.channelAnalysis),
+                  _buildInfoItem(AppLocalizations.of(context)!.aiIntelligentAnalysis),
                 ],
               ),
             ),
@@ -167,23 +169,23 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
               ),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Column(
+            child: Column(
               children: [
-                Icon(Icons.check_circle, color: Colors.white, size: 64),
-                SizedBox(height: 12),
+                const Icon(Icons.check_circle, color: Colors.white, size: 64),
+                const SizedBox(height: 12),
                 Text(
-                  '¡Reporte Generado!',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.reportGeneratedSuccessfully,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
-                  'El reporte está listo para ser enviado a la IA',
+                  AppLocalizations.of(context)!.yourDataIsReady,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 14,
                   ),
@@ -212,7 +214,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
             child: ElevatedButton.icon(
               onPressed: () => _analyzeWithAI(context),
               icon: const Icon(Icons.psychology, size: 24),
-              label: const Text('Analizar con IA'),
+              label: Text(AppLocalizations.of(context)!.analyzeWithAI),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 18),
                 backgroundColor: Colors.deepPurple,
@@ -233,14 +235,14 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
               onPressed: () {
                 // TODO: Navegar a pantalla de historial de reportes
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Próximamente: Historial de reportes'),
-                    duration: Duration(seconds: 2),
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.viewReportsHistory),
+                    duration: const Duration(seconds: 2),
                   ),
                 );
               },
               icon: const Icon(Icons.history),
-              label: const Text('Ver Historial de Reportes'),
+              label: Text(AppLocalizations.of(context)!.viewReportsHistory),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
@@ -251,18 +253,16 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
           // Opciones avanzadas en un menú desplegable
           ExpansionTile(
             leading: const Icon(Icons.more_horiz),
-            title: const Text('Opciones avanzadas'),
+            title: Text(AppLocalizations.of(context)!.advancedOptions),
             children: [
               ListTile(
                 leading: const Icon(Icons.code),
-                title: const Text('Copiar datos técnicos'),
-                subtitle: const Text('JSON para desarrolladores'),
+                title: Text(AppLocalizations.of(context)!.copyTechnicalData),
                 onTap: _copyJsonToClipboard,
               ),
               ListTile(
                 leading: const Icon(Icons.refresh),
-                title: const Text('Generar nuevo reporte'),
-                subtitle: const Text('Volver a calcular los datos'),
+                title: Text(AppLocalizations.of(context)!.generateAIReport),
                 onTap: () {
                   setState(() {
                     _generatedReport = null;
@@ -288,7 +288,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Resumen - ${report.mes}',
+              '${AppLocalizations.of(context)!.summary} - ${report.mes}',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -296,39 +296,39 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
             ),
             const Divider(height: 24),
             _buildSummaryRow(
-              '💵 Ingresos Totales',
+              '💵 ${AppLocalizations.of(context)!.totalIncome}',
               CurrencyFormatter.formatCurrency(report.ingresosTotal),
               Colors.green,
             ),
             _buildSummaryRow(
-              '💸 Egresos Totales',
+              '💸 ${AppLocalizations.of(context)!.totalExpenses}',
               CurrencyFormatter.formatCurrency(report.egresosTotal),
               Colors.red,
             ),
             _buildSummaryRow(
-              '💰 Balance Neto',
+              '💰 ${AppLocalizations.of(context)!.balance}',
               CurrencyFormatter.formatCurrency(report.balanceNeto),
               report.balanceNeto >= 0 ? Colors.green : Colors.red,
             ),
             const SizedBox(height: 12),
             _buildSummaryRow(
-              '🎯 Metas de Ahorro',
-              '${report.metas.length} activas',
+              '🎯 ${AppLocalizations.of(context)!.savingsGoals}',
+              '${report.metas.length} ${AppLocalizations.of(context)!.activeSavings}',
               Colors.blue,
             ),
             _buildSummaryRow(
-              '📊 Ahorrado en Metas',
+              '📊 ${AppLocalizations.of(context)!.savedInGoals}',
               CurrencyFormatter.formatCurrency(report.ahorradoEnMetas),
               Colors.purple,
             ),
             const SizedBox(height: 12),
             _buildSummaryRow(
-              '🔢 Total Transacciones',
+              '🔢 ${AppLocalizations.of(context)!.totalTransactions}',
               '${report.totalTransacciones}',
               Colors.orange,
             ),
             _buildSummaryRow(
-              '📈 % Ahorro',
+              '📈 ${AppLocalizations.of(context)!.savingsPercentage}',
               '${report.porcentajeAhorro.toStringAsFixed(1)}%',
               Colors.teal,
             ),
@@ -380,9 +380,9 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
               children: [
                 const Icon(Icons.pie_chart, color: Colors.deepPurple),
                 const SizedBox(width: 8),
-                const Text(
-                  'Top Categorías de Gastos',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.topCategories,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -391,12 +391,12 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
             ),
             const SizedBox(height: 16),
             if (top5Expenses.isEmpty)
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Text(
-                    'No hay gastos registrados este mes',
-                    style: TextStyle(color: Colors.grey),
+                    AppLocalizations.of(context)!.noExpensesRecorded,
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
               )
@@ -457,7 +457,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
           ],
         ),
       ),
@@ -478,9 +478,9 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
               children: [
                 const Icon(Icons.account_balance_wallet, color: Colors.blue),
                 const SizedBox(width: 8),
-                const Text(
-                  'Balance por Canal',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.channelDistribution,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -489,12 +489,12 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
             ),
             const SizedBox(height: 16),
             if (report.saldoPorCanal.isEmpty)
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Text(
-                    'No hay información de canales',
-                    style: TextStyle(color: Colors.grey),
+                    AppLocalizations.of(context)!.noChannelsRecorded,
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
               )
@@ -544,7 +544,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
                     ),
                   ),
                 );
-              }).toList(),
+              }),
           ],
         ),
       ),
@@ -572,7 +572,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
     try {
       final userId = AuthService().currentUser?.uid;
       if (userId == null) {
-        throw Exception('Usuario no autenticado');
+        throw Exception(AppLocalizations.of(context)!.notAuthenticated);
       }
 
       final aiReportService = AIReportService(
@@ -601,12 +601,12 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 8),
-                Text('Reporte generado exitosamente'),
+                const Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 8),
+                Text(AppLocalizations.of(context)!.reportGeneratedSuccess),
               ],
             ),
             backgroundColor: Colors.green,
@@ -621,7 +621,7 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al generar reporte: $e'),
+            content: Text('${AppLocalizations.of(context)!.errorGeneratingReport}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -633,16 +633,16 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
     if (_jsonOutput != null) {
       Clipboard.setData(ClipboardData(text: _jsonOutput!));
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Row(
             children: [
-              Icon(Icons.check_circle, color: Colors.white),
-              SizedBox(width: 8),
-              Text('Datos técnicos copiados al portapapeles'),
+              const Icon(Icons.check_circle, color: Colors.white),
+              const SizedBox(width: 8),
+              Text(AppLocalizations.of(context)!.technicalDataCopied),
             ],
           ),
           backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
@@ -655,20 +655,20 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const Center(
+      builder: (context) => Center(
         child: Card(
           child: Padding(
-            padding: EdgeInsets.all(32),
+            padding: const EdgeInsets.all(32),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text('Analizando con IA...'),
-                SizedBox(height: 8),
+                const CircularProgressIndicator(),
+                const SizedBox(height: 16),
+                Text(AppLocalizations.of(context)!.analyzingWithAI),
+                const SizedBox(height: 8),
                 Text(
-                  'Esto puede tomar unos segundos',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                  AppLocalizations.of(context)!.pleaseWait,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
             ),
@@ -701,24 +701,24 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
         // Mostrar error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al analizar con IA: $e'),
+            content: Text('${AppLocalizations.of(context)!.errorAnalyzingAI}: $e'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 5),
             action: SnackBarAction(
-              label: 'Ver detalles',
+              label: AppLocalizations.of(context)!.viewDetails,
               textColor: Colors.white,
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text('Error de IA'),
+                    title: Text(AppLocalizations.of(context)!.errorAnalyzingAI),
                     content: SingleChildScrollView(
                       child: Text(e.toString()),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text('Cerrar'),
+                        child: Text(AppLocalizations.of(context)!.cancel),
                       ),
                     ],
                   ),
@@ -729,13 +729,5 @@ class _CloseMonthScreenState extends State<CloseMonthScreen> {
         );
       }
     }
-  }
-
-  String _getMonthName(int month) {
-    const monthNames = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
-    return monthNames[month - 1];
   }
 }

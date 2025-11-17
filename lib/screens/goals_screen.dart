@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../core/providers/finance_provider.dart';
 import '../core/utils/currency_formatter.dart';
 import '../data/models/goal_model.dart';
+import 'package:intl/intl.dart' as intl;
+import '../l10n/app_localizations.dart';
 
 class GoalsScreen extends StatefulWidget {
   const GoalsScreen({super.key});
@@ -50,12 +52,12 @@ class _GoalsScreenState extends State<GoalsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Metas y Logros'),
+        title: Text(AppLocalizations.of(context)!.goals),
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
             onPressed: () => _showInfoDialog(context),
-            tooltip: 'Información',
+            tooltip: 'Info',
           ),
         ],
       ),
@@ -65,7 +67,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showGoalDialog(context),
         icon: const Icon(Icons.add),
-        label: const Text('Nueva Meta'),
+        label: Text(AppLocalizations.of(context)!.createGoal),
       ),
     );
   }
@@ -85,14 +87,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              '¡Define tus metas!',
+              AppLocalizations.of(context)!.savingsGoals,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),
             const SizedBox(height: 12),
             Text(
-              'Crea metas de ahorro y alcanza tus objetivos financieros',
+              AppLocalizations.of(context)!.savingsGoalsTracking,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -103,7 +105,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
             ElevatedButton.icon(
               onPressed: () => _showGoalDialog(context),
               icon: const Icon(Icons.add_circle_outline),
-              label: const Text('Crear Mi Primera Meta'),
+              label: Text(AppLocalizations.of(context)!.createGoal),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
@@ -135,7 +137,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
           // Metas activas
           if (activeGoals.isNotEmpty) ...[
             Text(
-              'Metas Activas (${activeGoals.length})',
+              '${AppLocalizations.of(context)!.inProgress} (${activeGoals.length})',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -152,7 +154,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 const Icon(Icons.emoji_events, color: Colors.amber, size: 28),
                 const SizedBox(width: 8),
                 Text(
-                  'Logros Alcanzados (${completedGoals.length})',
+                  '${AppLocalizations.of(context)!.completed} (${completedGoals.length})',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.amber[700],
@@ -189,14 +191,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
               children: [
                 _buildStatItem(
                   context,
-                  'Total Metas',
+                  AppLocalizations.of(context)!.goals,
                   totalGoals.toString(),
                   Icons.flag,
                   Colors.blue,
                 ),
                 _buildStatItem(
                   context,
-                  'Completadas',
+                  AppLocalizations.of(context)!.completed,
                   completedGoals.toString(),
                   Icons.check_circle,
                   Colors.green,
@@ -211,7 +213,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Progreso General',
+                      AppLocalizations.of(context)!.progress,
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -231,7 +233,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Ahorrado',
+                      AppLocalizations.of(context)!.savedInGoals,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[600],
@@ -247,7 +249,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'de ${CurrencyFormatter.formatCurrency(totalTarget)}',
+                      '${AppLocalizations.of(context)!.targetAmount}: ${CurrencyFormatter.formatCurrency(totalTarget)}',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[600],
@@ -328,7 +330,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -363,18 +365,18 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                   color: Colors.green,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: const Row(
+                                child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.check_circle,
                                       color: Colors.white,
                                       size: 14,
                                     ),
-                                    SizedBox(width: 4),
+                                    const SizedBox(width: 4),
                                     Text(
-                                      '¡Logrado!',
-                                      style: TextStyle(
+                                      AppLocalizations.of(context)!.completed,
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
@@ -413,36 +415,36 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       }
                     },
                     itemBuilder: (context) => [
-                      const PopupMenuItem(
+                        PopupMenuItem(
                         value: 'add_money',
-                        child: Row(
-                          children: [
-                            Icon(Icons.add_circle_outline, size: 20),
-                            SizedBox(width: 8),
-                            Text('Agregar Dinero'),
-                          ],
-                        ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.add_circle_outline, size: 20),
+                              const SizedBox(width: 8),
+                              Text('${AppLocalizations.of(context)!.add} ${AppLocalizations.of(context)!.amount}'),
+                            ],
+                          ),
                       ),
-                      const PopupMenuItem(
+                        PopupMenuItem(
                         value: 'edit',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit, size: 20),
-                            SizedBox(width: 8),
-                            Text('Editar'),
-                          ],
-                        ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.edit, size: 20),
+                              const SizedBox(width: 8),
+                              Text(AppLocalizations.of(context)!.edit),
+                            ],
+                          ),
                       ),
-                      const PopupMenuItem(
+                        PopupMenuItem(
                         value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete, color: Colors.red, size: 20),
-                            SizedBox(width: 8),
-                            Text('Eliminar',
-                                style: TextStyle(color: Colors.red)),
-                          ],
-                        ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.delete, color: Colors.red, size: 20),
+                              const SizedBox(width: 8),
+                              Text(AppLocalizations.of(context)!.delete,
+                                  style: const TextStyle(color: Colors.red)),
+                            ],
+                          ),
                       ),
                     ],
                   ),
@@ -498,7 +500,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
               // Monto restante
               if (!goal.isCompleted)
                 Text(
-                  'Faltan ${CurrencyFormatter.formatCurrency(goal.remainingAmount)} para alcanzar tu meta',
+                  '${AppLocalizations.of(context)!.remaining}: ${CurrencyFormatter.formatCurrency(goal.remainingAmount)}',
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[600],
@@ -537,7 +539,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
       context: context,
       builder: (dialogContext) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: Text(isEdit ? 'Editar Meta' : 'Nueva Meta'),
+          title: Text(isEdit ? AppLocalizations.of(context)!.editGoal : AppLocalizations.of(context)!.createGoal),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -546,10 +548,9 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 // Título
                 TextField(
                   controller: titleController,
-                  decoration: const InputDecoration(
-                    labelText: 'Título de la meta',
-                    hintText: 'Ej: Ahorrar para zapatos nuevos',
-                    prefixIcon: Icon(Icons.title),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.goalName,
+                    prefixIcon: const Icon(Icons.title),
                   ),
                   textCapitalization: TextCapitalization.sentences,
                 ),
@@ -558,10 +559,9 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 // Descripción
                 TextField(
                   controller: descriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Descripción (opcional)',
-                    hintText: 'Detalles sobre tu meta',
-                    prefixIcon: Icon(Icons.notes),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.description,
+                    prefixIcon: const Icon(Icons.notes),
                   ),
                   maxLines: 2,
                   textCapitalization: TextCapitalization.sentences,
@@ -571,10 +571,10 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 // Monto objetivo
                 TextField(
                   controller: targetAmountController,
-                  decoration: const InputDecoration(
-                    labelText: 'Monto objetivo',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.targetAmount,
                     hintText: '0',
-                    prefixIcon: Icon(Icons.attach_money),
+                    prefixIcon: const Icon(Icons.attach_money),
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -584,10 +584,10 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 // Monto actual
                 TextField(
                   controller: currentAmountController,
-                  decoration: const InputDecoration(
-                    labelText: 'Monto actual ahorrado',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.currentAmount,
                     hintText: '0',
-                    prefixIcon: Icon(Icons.savings),
+                    prefixIcon: const Icon(Icons.savings),
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -600,8 +600,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   leading: const Icon(Icons.calendar_today),
                   title: Text(
                     targetDate != null
-                        ? 'Fecha objetivo: ${targetDate!.day}/${targetDate!.month}/${targetDate!.year}'
-                        : 'Sin fecha objetivo',
+                        ? '${AppLocalizations.of(context)!.deadline}: ${intl.DateFormat.yMd(Localizations.localeOf(context).toString()).format(targetDate!)}'
+                        : AppLocalizations.of(context)!.deadline,
                   ),
                   trailing: IconButton(
                     icon: Icon(
@@ -648,7 +648,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? selectedColor.withOpacity(0.2)
+                              ? selectedColor.withValues(alpha: 0.2)
                               : Colors.grey[200],
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
@@ -706,15 +706,15 @@ class _GoalsScreenState extends State<GoalsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () async {
                 if (titleController.text.isEmpty ||
                     targetAmountController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Por favor completa los campos requeridos'),
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.error),
                       backgroundColor: Colors.orange,
                     ),
                   );
@@ -728,8 +728,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
 
                 if (targetAmount <= 0) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('El monto objetivo debe ser mayor a 0'),
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.error),
                       backgroundColor: Colors.orange,
                     ),
                   );
@@ -768,9 +768,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                           children: [
                             const Icon(Icons.check_circle, color: Colors.white),
                             const SizedBox(width: 8),
-                            Text(isEdit
-                                ? 'Meta actualizada'
-                                : 'Meta creada exitosamente'),
+                            Text(AppLocalizations.of(context)!.success),
                           ],
                         ),
                         backgroundColor: Colors.green,
@@ -781,14 +779,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Error: $e'),
+                        content: Text('${AppLocalizations.of(context)!.error}: $e'),
                         backgroundColor: Colors.red,
                       ),
                     );
                   }
                 }
               },
-              child: Text(isEdit ? 'Actualizar' : 'Crear'),
+              child: Text(AppLocalizations.of(context)!.save),
             ),
           ],
         ),
@@ -806,7 +804,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Agregar Dinero'),
+        title: Text('${AppLocalizations.of(context)!.add} ${AppLocalizations.of(context)!.amount}'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -820,20 +818,20 @@ class _GoalsScreenState extends State<GoalsScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Actual: ${CurrencyFormatter.formatCurrency(goal.currentAmount)}',
+              '${AppLocalizations.of(context)!.currentAmount}: ${CurrencyFormatter.formatCurrency(goal.currentAmount)}',
               style: TextStyle(color: Colors.grey[600]),
             ),
             Text(
-              'Faltan: ${CurrencyFormatter.formatCurrency(goal.remainingAmount)}',
+              '${AppLocalizations.of(context)!.remaining}: ${CurrencyFormatter.formatCurrency(goal.remainingAmount)}',
               style: TextStyle(color: Colors.grey[600]),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: amountController,
-              decoration: const InputDecoration(
-                labelText: 'Monto a agregar',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.amount,
                 hintText: '0',
-                prefixIcon: Icon(Icons.add_circle_outline),
+                prefixIcon: const Icon(Icons.add_circle_outline),
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -844,15 +842,15 @@ class _GoalsScreenState extends State<GoalsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () async {
               final amount = double.tryParse(amountController.text) ?? 0;
               if (amount <= 0) {
                 ScaffoldMessenger.of(dialogContext).showSnackBar(
-                  const SnackBar(
-                    content: Text('Ingresa un monto válido'),
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.error),
                     backgroundColor: Colors.orange,
                   ),
                 );
@@ -876,8 +874,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                           children: [
                             const Icon(Icons.check_circle, color: Colors.white),
                             const SizedBox(width: 8),
-                            Text(
-                                'Se agregaron ${CurrencyFormatter.formatCurrency(amount)}'),
+                            Text(AppLocalizations.of(context)!.success),
                           ],
                         ),
                         backgroundColor: Colors.green,
@@ -889,14 +886,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 if (dialogContext.mounted) {
                   ScaffoldMessenger.of(dialogContext).showSnackBar(
                     SnackBar(
-                      content: Text('Error: $e'),
+                      content: Text('${AppLocalizations.of(context)!.error}: $e'),
                       backgroundColor: Colors.red,
                     ),
                   );
                 }
               }
             },
-            child: const Text('Agregar'),
+            child: Text(AppLocalizations.of(context)!.add),
           ),
         ],
       ),
@@ -943,28 +940,28 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 const Divider(height: 24),
               ],
               _buildDetailRow(
-                'Monto objetivo',
+                AppLocalizations.of(context)!.targetAmount,
                 CurrencyFormatter.formatCurrency(goal.targetAmount),
                 Icons.flag,
                 color,
               ),
               const SizedBox(height: 12),
               _buildDetailRow(
-                'Monto ahorrado',
+                AppLocalizations.of(context)!.currentAmount,
                 CurrencyFormatter.formatCurrency(goal.currentAmount),
                 Icons.savings,
                 Colors.green,
               ),
               const SizedBox(height: 12),
               _buildDetailRow(
-                'Falta por ahorrar',
+                AppLocalizations.of(context)!.remaining,
                 CurrencyFormatter.formatCurrency(goal.remainingAmount),
                 Icons.schedule,
                 Colors.orange,
               ),
               const SizedBox(height: 12),
               _buildDetailRow(
-                'Progreso',
+                AppLocalizations.of(context)!.progress,
                 '${goal.progressPercentage.toStringAsFixed(1)}%',
                 Icons.trending_up,
                 color,
@@ -972,8 +969,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
               if (goal.targetDate != null) ...[
                 const SizedBox(height: 12),
                 _buildDetailRow(
-                  'Fecha objetivo',
-                  '${goal.targetDate!.day}/${goal.targetDate!.month}/${goal.targetDate!.year}',
+                  AppLocalizations.of(context)!.deadline,
+                  intl.DateFormat.yMd(Localizations.localeOf(context).toString()).format(goal.targetDate!),
                   Icons.calendar_today,
                   Colors.blue,
                 ),
@@ -1001,11 +998,11 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 _showAddMoneyDialog(context, goal);
               },
               icon: const Icon(Icons.add_circle_outline),
-              label: const Text('Agregar Dinero'),
+              label: Text('${AppLocalizations.of(context)!.add} ${AppLocalizations.of(context)!.amount}'),
             ),
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cerrar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
         ],
       ),
@@ -1045,23 +1042,23 @@ class _GoalsScreenState extends State<GoalsScreen> {
       context: context,
       barrierDismissible: false,
       builder: (celebrationContext) => AlertDialog(
-        title: const Column(
+        title: Column(
           children: [
             Icon(Icons.emoji_events, color: Colors.amber, size: 64),
             SizedBox(height: 8),
             Text(
-              '¡Felicitaciones!',
-              style: TextStyle(color: Colors.amber),
+              AppLocalizations.of(context)!.success,
+              style: const TextStyle(color: Colors.amber),
             ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              '¡Has alcanzado tu meta!',
+            Text(
+              AppLocalizations.of(context)!.completed,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -1085,16 +1082,13 @@ class _GoalsScreenState extends State<GoalsScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              '🎊 🎉 🎈',
-              style: TextStyle(fontSize: 32),
-            ),
+            const Text('🎊 🎉 🎈', style: TextStyle(fontSize: 32)),
           ],
         ),
         actions: [
           ElevatedButton(
             onPressed: () => Navigator.pop(celebrationContext),
-            child: const Text('¡Genial!'),
+            child: Text(AppLocalizations.of(context)!.confirm),
           ),
         ],
       ),
@@ -1109,18 +1103,18 @@ class _GoalsScreenState extends State<GoalsScreen> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
             Icon(Icons.warning, color: Colors.orange),
             SizedBox(width: 8),
-            Text('Eliminar Meta'),
+            Text(AppLocalizations.of(context)!.delete),
           ],
         ),
-        content: Text('¿Estás seguro de eliminar "${goal.title}"?'),
+        content: Text(AppLocalizations.of(context)!.confirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -1129,24 +1123,22 @@ class _GoalsScreenState extends State<GoalsScreen> {
 
                 if (dialogContext.mounted) {
                   Navigator.pop(dialogContext);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Row(
-                        children: [
-                          Icon(Icons.check_circle, color: Colors.white),
-                          SizedBox(width: 8),
-                          Text('Meta eliminada'),
-                        ],
-                      ),
-                      backgroundColor: Colors.green,
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Row(
+                      children: [
+                        const Icon(Icons.check_circle, color: Colors.white),
+                        const SizedBox(width: 8),
+                        Text(AppLocalizations.of(context)!.success),
+                      ],
                     ),
-                  );
+                    backgroundColor: Colors.green,
+                  ));
                 }
               } catch (e) {
                 if (dialogContext.mounted) {
                   ScaffoldMessenger.of(dialogContext).showSnackBar(
                     SnackBar(
-                      content: Text('Error: $e'),
+                      content: Text('${AppLocalizations.of(context)!.error}: $e'),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -1157,7 +1149,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Eliminar'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -1177,10 +1169,10 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 const Icon(Icons.info_outline, color: Colors.blue),
                 const SizedBox(width: 8),
                 // Permitir que el título haga wrap si es necesario
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'Sobre Metas y Logros',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    AppLocalizations.of(context)!.goals,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -1215,7 +1207,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
             actions: [
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Entendido'),
+                child: Text(AppLocalizations.of(context)!.confirm),
               ),
             ],
           ),

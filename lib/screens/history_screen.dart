@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../core/providers/finance_provider.dart';
 import '../core/utils/currency_formatter.dart';
 import '../data/models/monthly_summary_model.dart';
+import 'package:intl/intl.dart' as intl;
+import '../l10n/app_localizations.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -22,7 +24,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Historial y Cierre de Mes'),
+        title: Text(AppLocalizations.of(context)!.history),
         actions: [
           // Botón para cerrar el mes actual
           Padding(
@@ -41,7 +43,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                     )
                   : const Icon(Icons.lock_clock),
-              label: Text(isClosingMonth ? 'Cerrando...' : 'Cerrar Mes'),
+              label: Text(isClosingMonth ? AppLocalizations.of(context)!.pleaseWait : AppLocalizations.of(context)!.monthlyReport),
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: Colors.white,
@@ -69,14 +71,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            'No hay historial de cierres mensuales',
+            AppLocalizations.of(context)!.noTransactions,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: Colors.grey[600],
                 ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Cierra el mes actual para comenzar',
+            AppLocalizations.of(context)!.viewReportsHistory,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.grey[500],
                 ),
@@ -85,7 +87,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ElevatedButton.icon(
             onPressed: () => _showCloseMonthDialog(context, Provider.of<FinanceProvider>(context, listen: false)),
             icon: const Icon(Icons.lock_clock),
-            label: const Text('Cerrar Mes Actual'),
+            label: Text(AppLocalizations.of(context)!.monthlyReport),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
@@ -121,7 +123,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 leading: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: _getMonthColor(summary.month).withOpacity(0.1),
+                    color: _getMonthColor(summary.month).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -130,7 +132,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                 ),
                 title: Text(
-                  _getMonthName(summary.month, summary.year),
+                  _getMonthName(context, summary.month, summary.year),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -152,7 +154,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          'Balance',
+                          AppLocalizations.of(context)!.balance,
                           style: TextStyle(
                             fontSize: 10,
                             color: Colors.grey[600],
@@ -212,7 +214,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       children: [
         // Resumen financiero
         Text(
-          'Resumen Financiero',
+          AppLocalizations.of(context)!.generalSummary,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -220,7 +222,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         const SizedBox(height: 12),
         _buildDetailRow(
           context,
-          'Ingresos Totales',
+          AppLocalizations.of(context)!.totalIncome,
           CurrencyFormatter.formatCurrency(summary.totalIncome),
           Icons.arrow_downward,
           Colors.green,
@@ -228,7 +230,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         const SizedBox(height: 8),
         _buildDetailRow(
           context,
-          'Egresos Totales',
+          AppLocalizations.of(context)!.totalExpenses,
           CurrencyFormatter.formatCurrency(summary.totalExpenses),
           Icons.arrow_upward,
           Colors.red,
@@ -236,7 +238,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         const SizedBox(height: 8),
         _buildDetailRow(
           context,
-          'Balance Final',
+          AppLocalizations.of(context)!.balance,
           CurrencyFormatter.formatCurrency(balance),
           Icons.account_balance_wallet,
           balance >= 0 ? Colors.green : Colors.red,
@@ -244,7 +246,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         const SizedBox(height: 8),
         _buildDetailRow(
           context,
-          'Tasa de Ahorro',
+          AppLocalizations.of(context)!.savingsPercentage,
           '${savingsRate.toStringAsFixed(1)}%',
           Icons.savings,
           savingsRate >= 20 ? Colors.green : Colors.orange,
@@ -254,7 +256,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
         // Saldos por canal
         Text(
-          'Saldos Iniciales vs Finales',
+          AppLocalizations.of(context)!.currentBalances,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -266,7 +268,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         if (summary.budgetComparison.isNotEmpty) ...[
           const Divider(height: 24),
           Text(
-            'Comparación con Presupuesto',
+            AppLocalizations.of(context)!.budgetSummary,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -317,7 +319,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     if (channels.isEmpty) {
       return Text(
-        'No hay información de saldos',
+        AppLocalizations.of(context)!.noBalancesAvailable,
         style: TextStyle(color: Colors.grey[500], fontSize: 12),
       );
     }
@@ -364,7 +366,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Inicial',
+                          AppLocalizations.of(context)!.planned,
                           style: TextStyle(
                             fontSize: 11,
                             color: Colors.grey[600],
@@ -388,7 +390,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          'Final',
+                          AppLocalizations.of(context)!.actual,
                           style: TextStyle(
                             fontSize: 11,
                             color: Colors.grey[600],
@@ -432,7 +434,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget _buildBudgetComparison(BuildContext context, MonthlySummaryModel summary) {
     if (summary.budgetComparison.isEmpty) {
       return Text(
-        'No hay comparación con presupuesto',
+        AppLocalizations.of(context)!.noBudgets,
         style: TextStyle(color: Colors.grey[500], fontSize: 12),
       );
     }
@@ -461,9 +463,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Ingresos',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.incomes,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
                   color: Colors.green,
@@ -473,7 +475,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Presupuestado', style: TextStyle(fontSize: 12)),
+                  Text(AppLocalizations.of(context)!.planned, style: const TextStyle(fontSize: 12)),
                   Text(
                     CurrencyFormatter.formatCurrency(plannedIncome),
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -484,7 +486,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Real', style: TextStyle(fontSize: 12)),
+                  Text(AppLocalizations.of(context)!.actual, style: const TextStyle(fontSize: 12)),
                   Text(
                     CurrencyFormatter.formatCurrency(actualIncome),
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -508,9 +510,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Egresos',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.expenses,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
                   color: Colors.red,
@@ -520,7 +522,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Presupuestado', style: TextStyle(fontSize: 12)),
+                  Text(AppLocalizations.of(context)!.planned, style: const TextStyle(fontSize: 12)),
                   Text(
                     CurrencyFormatter.formatCurrency(plannedExpense),
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -531,7 +533,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Real', style: TextStyle(fontSize: 12)),
+                  Text(AppLocalizations.of(context)!.actual, style: const TextStyle(fontSize: 12)),
                   Text(
                     CurrencyFormatter.formatCurrency(actualExpense),
                     style: TextStyle(
@@ -553,7 +555,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                '${expensePercentage.toStringAsFixed(1)}% del presupuesto',
+                '${expensePercentage.toStringAsFixed(1)}% ${AppLocalizations.of(context)!.budgetSummary}',
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
@@ -570,16 +572,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
   // Diálogo para confirmar cierre de mes
   void _showCloseMonthDialog(BuildContext context, FinanceProvider provider) {
     final now = DateTime.now();
-    final monthName = _getMonthName(now.month, now.year);
+    final monthName = _getMonthName(context, now.month, now.year);
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
             Icon(Icons.lock_clock, color: Colors.orange),
             SizedBox(width: 8),
-            Text('Cerrar Mes'),
+            Text(AppLocalizations.of(context)!.monthlyReport),
           ],
         ),
         content: Column(
@@ -587,7 +589,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '¿Estás seguro de cerrar el mes de $monthName?',
+              '¿${AppLocalizations.of(context)!.confirm}? $monthName',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
@@ -596,10 +598,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
               style: TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 8),
-            _buildBulletPoint('Todas las transacciones del mes'),
-            _buildBulletPoint('Saldos iniciales y finales por canal'),
-            _buildBulletPoint('Comparación con presupuesto'),
-            _buildBulletPoint('Métricas de ahorro'),
+            _buildBulletPoint(AppLocalizations.of(context)!.allTransactions),
+            _buildBulletPoint(AppLocalizations.of(context)!.channels),
+            _buildBulletPoint(AppLocalizations.of(context)!.budgetSummary),
+            _buildBulletPoint(AppLocalizations.of(context)!.savings),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(12),
@@ -608,14 +610,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.orange[200]!),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.orange, size: 20),
-                  SizedBox(width: 8),
+                  const Icon(Icons.info_outline, color: Colors.orange, size: 20),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'No podrás editar transacciones de este mes después del cierre.',
-                      style: TextStyle(fontSize: 12),
+                      AppLocalizations.of(context)!.viewDetails,
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ),
                 ],
@@ -626,7 +628,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -637,7 +639,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               backgroundColor: Colors.orange,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Cerrar Mes'),
+            child: Text(AppLocalizations.of(context)!.monthlyReport),
           ),
         ],
       ),
@@ -670,7 +672,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
       // Llamar al método del provider que maneja toda la lógica
       await provider.closeMonth();
 
-      final now = DateTime.now();
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -678,7 +679,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               children: [
                 const Icon(Icons.check_circle, color: Colors.white),
                 const SizedBox(width: 8),
-                Text('Mes de ${_getMonthName(now.month, now.year)} cerrado exitosamente'),
+                Text(AppLocalizations.of(context)!.success),
               ],
             ),
             backgroundColor: Colors.green,
@@ -694,7 +695,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               children: [
                 const Icon(Icons.error, color: Colors.white),
                 const SizedBox(width: 8),
-                Text('Error al cerrar el mes: $e'),
+                Text('${AppLocalizations.of(context)!.error}: $e'),
               ],
             ),
             backgroundColor: Colors.red,
@@ -710,12 +711,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   // Utilidades
-  String _getMonthName(int month, int year) {
-    const months = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
-    return '${months[month - 1]} $year';
+  String _getMonthName(BuildContext context, int month, int year) {
+    final locale = Localizations.localeOf(context).toString();
+    return intl.DateFormat('MMMM y', locale).format(DateTime(year, month, 1));
   }
 
   String _getSummarySubtitle(MonthlySummaryModel summary) {

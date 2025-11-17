@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../core/providers/finance_provider.dart';
 import '../data/models/budget_model.dart';
 import '../core/constants/app_constants.dart';
@@ -39,6 +39,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FinanceProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     // Calcular totales
     final totalPlannedIncome = _incomeBudget.values.fold(0.0, (sum, val) => sum + val);
@@ -54,13 +55,14 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
         children: [
           // Título
           Text(
-            'Presupuestos Mensuales',
+            l10n.monthlyBudgets,
             style: Theme.of(context).textTheme.displayMedium,
           ),
           const SizedBox(height: 16),
 
           // Resumen de Ingresos y Egresos
           _buildSummaryCards(
+            context,
             totalPlannedIncome,
             totalActualIncome,
             totalPlannedExpense,
@@ -114,16 +116,19 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
   }
 
   Widget _buildSummaryCards(
+    BuildContext context,
     double plannedIncome,
     double actualIncome,
     double plannedExpense,
     double actualExpense,
   ) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
           child: _buildSummaryCard(
-            'Ingresos',
+            context,
+            l10n.incomes,
             plannedIncome,
             actualIncome,
             AppColors.income,
@@ -133,7 +138,8 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
         const SizedBox(width: 12),
         Expanded(
           child: _buildSummaryCard(
-            'Egresos',
+            context,
+            l10n.expenses,
             plannedExpense,
             actualExpense,
             AppColors.expense,
@@ -145,6 +151,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
   }
 
   Widget _buildSummaryCard(
+    BuildContext context,
     String title,
     double planned,
     double actual,
@@ -174,12 +181,17 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
               ],
             ),
             const SizedBox(height: 12),
-            Text(
-              'Planeado',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-              ),
+            Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                return Text(
+                  l10n.planned,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                );
+              },
             ),
             Text(
               CurrencyFormatter.formatCurrency(planned),
@@ -190,12 +202,17 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              'Real',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-              ),
+            Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                return Text(
+                  l10n.actual,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                );
+              },
             ),
             Text(
               CurrencyFormatter.formatCurrency(actual),
@@ -229,6 +246,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
   }
 
   Widget _buildEditMode() {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         // Presupuestos de Ingresos
@@ -239,7 +257,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Presupuesto de Ingresos',
+                  l10n.incomeBudget,
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
                 const SizedBox(height: 16),
@@ -267,7 +285,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Presupuesto de Egresos',
+                  l10n.expenseBudget,
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
                 const SizedBox(height: 16),
@@ -337,11 +355,13 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
   }
 
   Widget _buildViewMode(FinanceProvider provider) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         // Comparación de Egresos
         _buildCategoryComparison(
-          'Comparación de Egresos por Categoría',
+          context,
+          l10n.expenseComparison,
           AppConstants.categoriasEgreso,
           _expenseBudget,
           provider.expensesByCategory,
@@ -350,7 +370,8 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
         const SizedBox(height: 24),
         // Comparación de Ingresos
         _buildCategoryComparison(
-          'Comparación de Ingresos por Categoría',
+          context,
+          l10n.incomeComparison,
           AppConstants.categoriasIngreso,
           _incomeBudget,
           _getIncomeByCategory(provider),
@@ -372,12 +393,14 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
   }
 
   Widget _buildCategoryComparison(
+    BuildContext context,
     String title,
     List<String> categories,
     Map<String, double> budgetMap,
     Map<String, double> actualMap,
     Color color,
   ) {
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -398,7 +421,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
                       Icon(Icons.edit_note, size: 64, color: Colors.grey[400]),
                       const SizedBox(height: 16),
                       Text(
-                        'No hay presupuestos establecidos',
+                        l10n.noBudgets,
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 14,
@@ -411,7 +434,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
                             _isEditing = true;
                           });
                         },
-                        child: const Text('Establecer Presupuestos'),
+                        child: Text(l10n.setBudgets),
                       ),
                     ],
                   ),
@@ -501,7 +524,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
           ],
         ),
       ),
@@ -522,11 +545,12 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
       await provider.saveBudget(budget);
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Presupuestos guardados exitosamente'),
+          SnackBar(
+            content: Text(l10n.budgetsSavedSuccessfully),
             backgroundColor: AppColors.success,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
         setState(() {
@@ -535,9 +559,10 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al guardar: $e'),
+            content: Text('${l10n.errorSaving}: $e'),
             backgroundColor: AppColors.error,
           ),
         );
